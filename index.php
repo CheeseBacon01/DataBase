@@ -1,4 +1,12 @@
 <?php
+session_start();
+if (!isset($_SESSION['is_login']) || $_SESSION['is_login'] !== true) {
+    header("Location: front.php");
+    exit();
+}
+?>
+
+<?php
 include('db.php');
 
 // 查詢功能
@@ -135,6 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['search_keyword'])) {
 </head>
 <body>
     <h1>教師後台管理</h1>
+    <a href="logout.php" style="float:right; margin: 20px 40px 0 0; font-size: 1.1em;">登出</a>
     <div class="container">
         <label for="functionSelect"><strong>請選擇功能：</strong></label>
         <select id="functionSelect" onchange="showSection()">
