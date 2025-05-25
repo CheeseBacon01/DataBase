@@ -10,7 +10,7 @@ $result = $mysqli->query("SELECT * FROM teachers");
 </head>
 <body>
     <h1>教師列表</h1>
-    <a href="index.php">回新增頁</a>
+    <a href="dashboard.php">回新增頁</a>
     <table border="1" cellpadding="5">
         <tr>
             <th>姓名</th>

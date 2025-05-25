@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['is_login']) || $_SESSION['is_login'] !== true) {
-    header("Location: front.php");
+    header("Location: index.php");
     exit();
 }
 ?>
@@ -78,10 +78,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
         <h2>修改教師資料</h2>
         <?php if ($success): ?>
             <div class="msg-success"><?= $success ?></div>
-            <a href="index.php" class="back-link">回首頁</a>
+            <a href="dashboard.php" class="back-link">回首頁</a>
         <?php elseif ($error): ?>
             <div class="msg-error"><?= $error ?></div>
-            <a href="index.php" class="back-link">回首頁</a>
+            <a href="dashboard.php" class="back-link">回首頁</a>
         <?php elseif (isset($row)): ?>
             <input type="hidden" name="Prof_ID" value="<?= htmlspecialchars($row['Prof_ID']) ?>">
             <label>姓名：
@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
                 <input type="text" name="Prof_ExtensionNumber" value="<?= htmlspecialchars($row['Prof_ExtensionNumber']) ?>" required>
             </label>
             <button type="submit">儲存修改</button>
-            <a href="index.php" class="back-link">取消</a>
+            <a href="dashboard.php" class="back-link">取消</a>
         <?php endif; ?>
     </form>
 </body>

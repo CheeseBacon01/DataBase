@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['is_login']) || $_SESSION['is_login'] !== true) {
-    header("Location: front.php");
+    header("Location: index.php");
     exit();
 }
 ?>
@@ -40,10 +40,10 @@ if ($id) {
 <body>
     <?php if ($success): ?>
         <div class="msg-success"><?= $success ?></div>
-        <a href="index.php" class="back-link">回首頁</a>
+        <a href="dashboard.php" class="back-link">回首頁</a>
     <?php else: ?>
         <div class="msg-error"><?= $error ?></div>
-        <a href="index.php" class="back-link">回首頁</a>
+        <a href="dashboard.php" class="back-link">回首頁</a>
     <?php endif; ?>
 </body>
 </html>

@@ -4,14 +4,24 @@ $error = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $_POST['username'] ?? '';
     $pass = $_POST['password'] ?? '';
-    // 這裡請自行更改帳號密碼
-    if ($user === 'admin' && $pass === '123456') {
-        $_SESSION['is_login'] = true;
-        header("Location: index.php");
-        exit();
+    include('db.php');
+    $stmt = $mysqli->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $user);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        if (password_verify($pass, $row['password'])) {
+            $_SESSION['is_login'] = true;
+            $_SESSION['username'] = $user;
+            header("Location: dashboard.php");
+            exit();
+        } else {
+            $error = "帳號或密碼錯誤";
+        }
     } else {
         $error = "帳號或密碼錯誤";
     }
+    $stmt->close();
 }
 ?>
 

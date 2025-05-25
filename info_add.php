@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['is_login']) || $_SESSION['is_login'] !== true) {
-    header("Location: front.php");
+    header("Location: index.php");
     exit();
 }
 ?>
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($stmt->execute()) {
-        header("Location: index.php");
+        header("Location: dashboard.php");
         exit();
     } else {
         echo "新增失敗！";
