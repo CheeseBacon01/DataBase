@@ -83,19 +83,144 @@ $stmt8->close();
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($prof['Prof_Name']) ?> - 教授資訊</title>
     <style>
-        body { font-family: "Microsoft JhengHei", Arial, sans-serif; background: #e0eafc; margin:0; }
-        .container { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.10); padding: 36px; }
-        h1 { color: #007bff; margin-bottom: 18px; }
-        .info { margin-bottom: 18px; }
-        .label { color: #888; margin-right: 8px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 18px; }
-        th, td { border: 1px solid #e3e6ea; padding: 10px; text-align: center; }
-        th { background: #007bff; color: #fff; }
-        tr:nth-child(even) { background: #f4f8fb; }
-        a { color: #007bff; }
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: #f3f4f6;
+            color: #222;
+        }
+        .navbar {
+            background: #fffbe8;
+            color: #222;
+            box-shadow: 0 2px 16px #e0e0c0;
+            border-radius: 0 0 18px 18px;
+            padding: 0 32px 0 32px;
+            position: relative;
+            min-height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar-title {
+            color: #222;
+            font-size: 1.5em;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: none;
+            padding: 0 0 0 8px;
+        }
+        .navbar-menu {
+            display: flex;
+            gap: 32px;
+            position: absolute;
+            right: 32px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .navbar-menu a {
+            color: #222;
+            text-shadow: none;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 8px 0;
+            transition: color 0.2s;
+        }
+        .navbar-menu a:hover {
+            color: #007bff;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 40px;
+            color: #222;
+            letter-spacing: 2px;
+            text-shadow: none;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            margin: 40px auto;
+            max-width: 900px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 32px #e0e0e0;
+            border: 1.5px solid #e0e0e0;
+            padding: 40px 32px 32px 32px;
+        }
+        .info, .label {
+            color: #444;
+            margin-bottom: 4px;
+        }
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin: 18px 0;
+            width: 100%;
+        }
+        .card {
+            background: #e5e6ea;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px #e0e0e0;
+            padding: 22px 28px;
+            border: 1.5px solid #e0e0e0;
+            color: #222;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .card:hover {
+            box-shadow: 0 8px 24px #d0d0d0;
+            transform: translateY(-2px) scale(1.025);
+        }
+        .card-title {
+            font-size: 1.18em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #007bff;
+            letter-spacing: 1px;
+            text-shadow: none;
+        }
+        .card-label {
+            color: #888;
+            font-size: 0.98em;
+            margin-right: 6px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        a:hover {
+            color: #222;
+        }
+        @media (max-width: 700px) {
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 0 10px;
+                border-radius: 0 0 12px 12px;
+            }
+            .navbar-menu {
+                position: static;
+                transform: none;
+                right: 0;
+                top: 0;
+                gap: 16px;
+                margin-top: 8px;
+            }
+            .container { padding: 10px; }
+            .card { padding: 12px 8px; width: 95%; }
+        }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <div class="navbar-title">逢甲資訊系統</div>
+        <div class="navbar-menu">
+            <a href="index.php">教授資訊</a>
+            <a href="#">課表</a>
+            <a href="dashboard.php">控制台</a>
+        </div>
+    </div>
     <div class="container">
         <a href="index.php">← 回教授列表</a>
         <h1><?= htmlspecialchars($prof['Prof_Name']) ?></h1>
@@ -104,152 +229,126 @@ $stmt8->close();
         <div class="info"><span class="label">電話分機：</span><?= htmlspecialchars($prof['Prof_ExtensionNumber']) ?></div>
         <h2>學歷</h2>
         <?php if (count($edus) > 0): ?>
-        <table>
-            <tr><th>學校</th><th>系所</th><th>學位</th></tr>
+        <div class="card-list">
             <?php foreach($edus as $edu): ?>
-            <tr>
-                <td><?= htmlspecialchars($edu['EduBG_University']) ?></td>
-                <td><?= htmlspecialchars($edu['EduBG_Department']) ?></td>
-                <td><?= htmlspecialchars($edu['EduBG_Degree']) ?></td>
-            </tr>
+            <div class="card">
+                <div class="card-title">學校：<?= htmlspecialchars($edu['EduBG_University']) ?></div>
+                <div><span class="card-label">系所：</span><?= htmlspecialchars($edu['EduBG_Department']) ?></div>
+                <div><span class="card-label">學位：</span><?= htmlspecialchars($edu['EduBG_Degree']) ?></div>
+            </div>
             <?php endforeach; ?>
-        </table>
+        </div>
         <?php else: ?>
         <div>尚無學歷資料</div>
         <?php endif; ?>
         <h2>經歷</h2>
         <?php if (count($exp_in) > 0): ?>
             <h3>校內經歷</h3>
-            <table>
-                <tr><th>經歷類型</th><th>職稱/職位</th></tr>
-                <?php foreach($exp_in as $exp): ?>
-                <tr>
-                    <td><?= htmlspecialchars($exp['Experience_type']) ?></td>
-                    <td><?= htmlspecialchars($exp['Experience_position']) ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </table>
+            <div class="card-list">
+            <?php foreach($exp_in as $exp): ?>
+                <div class="card">
+                    <div class="card-title">類型：<?= htmlspecialchars($exp['Experience_type']) ?></div>
+                    <div><span class="card-label">職稱/職位：</span><?= htmlspecialchars($exp['Experience_position']) ?></div>
+                </div>
+            <?php endforeach; ?>
+            </div>
         <?php endif; ?>
         <?php if (count($exp_out) > 0): ?>
             <h3>校外經歷</h3>
-            <table>
-                <tr><th>經歷類型</th><th>職稱/職位</th></tr>
-                <?php foreach($exp_out as $exp): ?>
-                <tr>
-                    <td><?= htmlspecialchars($exp['Experience_type']) ?></td>
-                    <td><?= htmlspecialchars($exp['Experience_position']) ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </table>
+            <div class="card-list">
+            <?php foreach($exp_out as $exp): ?>
+                <div class="card">
+                    <div class="card-title">類型：<?= htmlspecialchars($exp['Experience_type']) ?></div>
+                    <div><span class="card-label">職稱/職位：</span><?= htmlspecialchars($exp['Experience_position']) ?></div>
+                </div>
+            <?php endforeach; ?>
+            </div>
         <?php endif; ?>
         <?php if (count($exp_in) === 0 && count($exp_out) === 0): ?>
             <div>尚無經歷資料</div>
         <?php endif; ?>
         <h2>指導學生獲獎</h2>
         <?php if (count($awards) > 0): ?>
-        <table>
-            <tr>
-                <th>學生姓名</th>
-                <th>作品/計畫名稱</th>
-                <th>競賽名稱與名次</th>
-                <th>得獎日期</th>
-                <th>主辦單位</th>
-            </tr>
+        <div class="card-list">
             <?php foreach($awards as $award): ?>
-            <tr>
-                <td><?= htmlspecialchars($award['Award_Advisee']) ?></td>
-                <td><?= htmlspecialchars($award['Award_ProjectName']) ?></td>
-                <td><?= htmlspecialchars($award['Award_CompName_Position']) ?></td>
-                <td><?= htmlspecialchars($award['Award_Date']) ?></td>
-                <td><?= htmlspecialchars($award['Award_organizer']) ?></td>
-            </tr>
+            <div class="card">
+                <div class="card-title">學生：<?= htmlspecialchars($award['Award_Advisee']) ?></div>
+                <div><span class="card-label">作品/計畫：</span><?= htmlspecialchars($award['Award_ProjectName']) ?></div>
+                <div><span class="card-label">競賽與名次：</span><?= htmlspecialchars($award['Award_CompName_Position']) ?></div>
+                <div><span class="card-label">得獎日期：</span><?= htmlspecialchars($award['Award_Date']) ?></div>
+                <div><span class="card-label">主辦單位：</span><?= htmlspecialchars($award['Award_organizer']) ?></div>
+            </div>
             <?php endforeach; ?>
-        </table>
+        </div>
         <?php else: ?>
         <div>尚無獲獎資料</div>
         <?php endif; ?>
         <h2>計畫</h2>
         <?php if (count($proj_nstc) > 0): ?>
             <h3>國科會計畫</h3>
-            <table>
-                <tr><th>計畫名稱</th><th>期間</th><th>擔任職務</th></tr>
-                <?php foreach($proj_nstc as $proj): ?>
-                <tr>
-                    <td><?= htmlspecialchars($proj['Project_Name']) ?></td>
-                    <td><?= htmlspecialchars($proj['Project_Duration']) ?></td>
-                    <td><?= htmlspecialchars($proj['Project_TakenPosition']) ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </table>
+            <div class="card-list">
+            <?php foreach($proj_nstc as $proj): ?>
+                <div class="card">
+                    <div class="card-title">計畫名稱：<?= htmlspecialchars($proj['Project_Name']) ?></div>
+                    <div><span class="card-label">期間：</span><?= htmlspecialchars($proj['Project_Duration']) ?></div>
+                    <div><span class="card-label">擔任職務：</span><?= htmlspecialchars($proj['Project_TakenPosition']) ?></div>
+                </div>
+            <?php endforeach; ?>
+            </div>
         <?php endif; ?>
         <?php if (count($proj_industry) > 0): ?>
             <h3>產學合作計畫</h3>
-            <table>
-                <tr><th>計畫名稱</th><th>期間</th><th>擔任職務</th></tr>
-                <?php foreach($proj_industry as $proj): ?>
-                <tr>
-                    <td><?= htmlspecialchars($proj['Project_Name']) ?></td>
-                    <td><?= htmlspecialchars($proj['Project_Duration']) ?></td>
-                    <td><?= htmlspecialchars($proj['Project_TakenPosition']) ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </table>
+            <div class="card-list">
+            <?php foreach($proj_industry as $proj): ?>
+                <div class="card">
+                    <div class="card-title">計畫名稱：<?= htmlspecialchars($proj['Project_Name']) ?></div>
+                    <div><span class="card-label">期間：</span><?= htmlspecialchars($proj['Project_Duration']) ?></div>
+                    <div><span class="card-label">擔任職務：</span><?= htmlspecialchars($proj['Project_TakenPosition']) ?></div>
+                </div>
+            <?php endforeach; ?>
+            </div>
         <?php endif; ?>
         <?php if (count($proj_nstc) === 0 && count($proj_industry) === 0): ?>
             <div>尚無計畫資料</div>
         <?php endif; ?>
         <h2>演講</h2>
         <?php if (count($speeches) > 0): ?>
-        <table>
-            <tr>
-                <th>演講名稱</th>
-                <th>對象/場合</th>
-                <th>日期</th>
-            </tr>
+        <div class="card-list">
             <?php foreach($speeches as $speech): ?>
-            <tr>
-                <td><?= htmlspecialchars($speech['Speech_Name']) ?></td>
-                <td><?= htmlspecialchars($speech['Speech_Audience']) ?></td>
-                <td><?= htmlspecialchars($speech['Speech_Date']) ?></td>
-            </tr>
+            <div class="card">
+                <div class="card-title">演講名稱：<?= htmlspecialchars($speech['Speech_Name']) ?></div>
+                <div><span class="card-label">對象/場合：</span><?= htmlspecialchars($speech['Speech_Audience']) ?></div>
+                <div><span class="card-label">日期：</span><?= htmlspecialchars($speech['Speech_Date']) ?></div>
+            </div>
             <?php endforeach; ?>
-        </table>
+        </div>
         <?php else: ?>
         <div>尚無演講資料</div>
         <?php endif; ?>
         <h2>教材與作品</h2>
         <?php if (count($teachmats) > 0): ?>
-        <table>
-            <tr>
-                <th>作者</th>
-                <th>教材/作品名稱</th>
-                <th>出版社/發表單位</th>
-            </tr>
+        <div class="card-list">
             <?php foreach($teachmats as $tm): ?>
-            <tr>
-                <td><?= htmlspecialchars($tm['TeachMat_Author']) ?></td>
-                <td><?= htmlspecialchars($tm['TeachMat_Name']) ?></td>
-                <td><?= htmlspecialchars($tm['TeachMat_Publisher']) ?></td>
-            </tr>
+            <div class="card">
+                <div class="card-title">教材/作品名稱：<?= htmlspecialchars($tm['TeachMat_Name']) ?></div>
+                <div><span class="card-label">作者：</span><?= htmlspecialchars($tm['TeachMat_Author']) ?></div>
+                <div><span class="card-label">出版社/發表單位：</span><?= htmlspecialchars($tm['TeachMat_Publisher']) ?></div>
+            </div>
             <?php endforeach; ?>
-        </table>
+        </div>
         <?php else: ?>
         <div>尚無教材與作品資料</div>
         <?php endif; ?>
         <h2>核准專利</h2>
-        <?php if (count($patents) > 0): ?>
-        <table>
-            <tr>
-                <th>專利類型</th>
-                <th>專利名稱/內容</th>
-            </tr>
+        <?php if (isset($patents) && count($patents) > 0): ?>
+        <div class="card-list">
             <?php foreach($patents as $pat): ?>
-            <tr>
-                <td><?= htmlspecialchars($pat['Patent_Type']) ?></td>
-                <td><?= htmlspecialchars($pat['Patent_Term']) ?></td>
-            </tr>
+            <div class="card">
+                <div class="card-title">專利類型：<?= htmlspecialchars($pat['Patent_Type']) ?></div>
+                <div><span class="card-label">專利名稱/內容：</span><?= htmlspecialchars($pat['Patent_Term']) ?></div>
+            </div>
             <?php endforeach; ?>
-        </table>
+        </div>
         <?php else: ?>
         <div>尚無專利資料</div>
         <?php endif; ?>

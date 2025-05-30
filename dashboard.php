@@ -16,285 +16,381 @@ include('db.php');
     <title>教師後台管理</title>
     <style>
         body {
-            font-family: "Microsoft JhengHei", Arial, sans-serif;
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
-            margin: 0;
-            padding: 0;
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: #f3f4f6;
+            color: #222;
         }
         h1 {
-            background: #343a40;
-            color: #fff;
+            background: #fffbe8;
+            color: #222;
+            text-shadow: none;
+            border-radius: 0 0 18px 18px;
+            box-shadow: 0 2px 12px #eee;
             padding: 24px 0 20px 0;
             margin: 0 0 30px 0;
             text-align: center;
             letter-spacing: 2px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
         nav {
-            background: #fff;
-            padding: 16px 0 12px 0;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-            text-align: center;
-            margin-bottom: 18px;
+            background: #fffbe8;
+            color: #222;
+            box-shadow: 0 2px 12px #eee;
+            border-radius: 0 0 18px 18px;
+            padding: 0 32px 0 32px;
+            min-height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-direction: row;
         }
         nav a {
-            margin: 0 24px;
+            color: #222;
+            background: none;
+            text-shadow: none;
             font-weight: bold;
-            color: #007bff;
-            font-size: 1.15em;
-            text-decoration: none;
+            font-size: 1.1em;
             padding: 8px 16px;
             border-radius: 6px;
             transition: background 0.2s, color 0.2s;
+            margin: 0 12px 0 0;
+            display: inline-block;
         }
-        nav a:hover, nav a.active {
-            background: #007bff;
-            color: #fff;
+        nav a:last-child {
+            margin-right: 0;
         }
         .container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 32px #e0e0e0;
+            border: 1.5px solid #e0e0e0;
             width: 97%;
             max-width: 900px;
             margin: 30px auto;
+            padding: 32px 24px 24px 24px;
         }
-        label[for="functionSelect"] {
-            font-size: 1.08em;
-            color: #343a40;
+        label[for^="functionSelect"] {
+            color: #222;
         }
-        select {
-            font-size: 1em;
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: 1px solid #b0b0b0;
-            margin-left: 8px;
-        }
-        .section {
-            display: none;
-            margin-top: 30px;
+        select, input[type="text"], input[type="email"], input[type="date"] {
+            background: #f5f6fa;
+            color: #222;
+            border: 1.5px solid #e0e0e0;
         }
         form {
-            background: #fff;
-            padding: 24px 20px 18px 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            background: #e5e6ea;
+            color: #222;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px #e0e0e0;
+            border: 1.5px solid #e0e0e0;
             margin-bottom: 18px;
         }
         form label {
             display: block;
-            margin-bottom: 12px;
-            color: #2d3a4b;
+            margin-bottom: 16px;
+            color: #222;
         }
         form input[type="text"],
-        form input[type="email"] {
-            width: 97%;
-            padding: 8px 10px;
-            margin-top: 4px;
-            border: 1px solid #b0b0b0;
+        form input[type="email"],
+        form input[type="date"],
+        form select {
+            width: 98%;
+            max-width: 480px;
+            padding: 10px 12px;
+            font-size: 1.08em;
+            margin-top: 6px;
+            margin-bottom: 2px;
+            border: 1.5px solid #e0e0e0;
             border-radius: 5px;
-            font-size: 1em;
-            background: #f7faff;
+            background: #f5f6fa;
+            box-sizing: border-box;
+            display: block;
         }
         form button {
-            margin-top: 14px;
-            padding: 10px 28px;
-            background: linear-gradient(90deg, #007bff 60%, #5bc0eb 100%);
-            color: #fff;
+            background: #ffe066;
+            color: #222;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.08em;
             font-weight: bold;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            box-shadow: 0 2px 8px #e0e0e0;
+            padding: 10px 28px;
+            margin-top: 14px;
+            font-size: 1.08em;
             transition: background 0.2s;
         }
         form button:hover {
-            background: linear-gradient(90deg, #0056b3 60%, #3a8dde 100%);
+            background: #ffd700;
+            color: #007bff;
         }
         table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            background: #e5e6ea;
+            color: #222;
             border-radius: 10px;
-            overflow: hidden;
-        }
-        th, td {
-            padding: 12px 14px;
-            border: 1px solid #e3e6ea;
-            text-align: center;
+            box-shadow: 0 2px 12px #e0e0e0;
+            border: 1.5px solid #e0e0e0;
         }
         th {
-            background: linear-gradient(90deg, #007bff 60%, #5bc0eb 100%);
-            color: #fff;
-            font-size: 1.05em;
+            background: #fffbe8;
+            color: #007bff;
         }
         tr:nth-child(even) {
-            background: #f4f8fb;
+            background: #f5f6fa;
+        }
+        td, th {
+            border: 1px solid #e0e0e0;
         }
         a {
             color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-            margin-right: 8px;
-            transition: color 0.2s;
         }
         a.delete-link {
-            color: #dc3545;
+            color: #ff5e5e;
         }
         a:hover {
-            text-decoration: underline;
-            color: #0056b3;
+            color: #222;
         }
-        @media (max-width: 700px) {
-            .container { width: 99%; }
+        .menu-bar {
+            background: #fffbe8;
+            border-radius: 0 0 18px 18px;
+            box-shadow: 0 2px 12px #eee;
+            margin-bottom: 32px;
+            padding: 0 0 0 0;
+        }
+        .menu-bar nav {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 32px;
+            min-height: 56px;
+            background: transparent;
+            box-shadow: none;
+        }
+        .menu-bar nav a {
+            color: #222;
+            background: none;
+            text-shadow: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            padding: 12px 18px;
+            border-radius: 6px;
+            transition: background 0.2s, color 0.2s;
+            margin: 0 12px 0 0;
+            display: inline-block;
+        }
+        .menu-bar nav a:last-child {
+            margin-right: 0;
+        }
+        .menu-bar nav a:hover, .menu-bar nav a.active {
+            background: #ffe066;
+            color: #007bff;
+        }
+        /* 讓維護選單的下拉式選單更大（不變深色） */
+        select#functionSelect,
+        select#userFunctionSelect,
+        select#eduFunctionSelect,
+        select#expFunctionSelect,
+        select#awardFunctionSelect,
+        select#projectFunctionSelect,
+        select#speechFunctionSelect,
+        select#teachmatFunctionSelect,
+        select#patentFunctionSelect {
+            min-width: 200px;
+            min-height: 38px;
+            font-size: 1.08em;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            background: #fffbe8;
+            color: #222;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px #eee;
+        }
+        select#functionSelect:focus,
+        select#userFunctionSelect:focus,
+        select#eduFunctionSelect:focus,
+        select#expFunctionSelect:focus,
+        select#awardFunctionSelect:focus,
+        select#projectFunctionSelect:focus,
+        select#speechFunctionSelect:focus,
+        select#teachmatFunctionSelect:focus,
+        select#patentFunctionSelect:focus {
+            background: #fffbe8;
+            color: #222;
+            outline: 2px solid #888;
+        }
+        select#functionSelect option:checked,
+        select#userFunctionSelect option:checked,
+        select#eduFunctionSelect option:checked,
+        select#expFunctionSelect option:checked,
+        select#awardFunctionSelect option:checked,
+        select#projectFunctionSelect option:checked,
+        select#speechFunctionSelect option:checked,
+        select#teachmatFunctionSelect option:checked,
+        select#patentFunctionSelect option:checked {
+            background: #ffe066;
+            color: #222;
+        }
+        /* 查詢與修改/刪除教師表格欄位與文字顏色調整為黑色 */
+        .teacher-table, .teacher-table th, .teacher-table td,
+        #deleteSection table, #deleteSection th, #deleteSection td,
+        #searchSection table, #searchSection th, #searchSection td,
+        #deleteEduSection table, #deleteEduSection th, #deleteEduSection td,
+        #searchEduSection table, #searchEduSection th, #searchEduSection td,
+        #deleteExpSection table, #deleteExpSection th, #deleteExpSection td,
+        #searchExpSection table, #searchExpSection th, #searchExpSection td,
+        #deleteAwardSection table, #deleteAwardSection th, #deleteAwardSection td,
+        #searchAwardSection table, #searchAwardSection th, #searchAwardSection td,
+        #deleteProjectSection table, #deleteProjectSection th, #deleteProjectSection td,
+        #searchProjectSection table, #searchProjectSection th, #searchProjectSection td,
+        #deleteSpeechSection table, #deleteSpeechSection th, #deleteSpeechSection td,
+        #searchSpeechSection table, #searchSpeechSection th, #searchSpeechSection td,
+        #deleteTeachMatSection table, #deleteTeachMatSection th, #deleteTeachMatSection td,
+        #searchTeachMatSection table, #searchTeachMatSection th, #searchTeachMatSection td,
+        #deletePatentSection table, #deletePatentSection th, #deletePatentSection td,
+        #searchPatentSection table, #searchPatentSection th, #searchPatentSection td {
+            color: #111 !important;
+        }
+        /* 查詢與修改/刪除教師表格欄位與文字顏色調整為灰色 */
+        .teacher-table, .teacher-table th, .teacher-table td {
             th, td { font-size: 0.97em; padding: 8px 4px; }
-            nav a { margin: 0 8px; font-size: 1em; }
+            nav {
+                flex-direction: column;
+                height: auto;
+                padding: 0 10px;
+                border-radius: 0 0 12px 12px;
+                align-items: flex-start;
+            }
+            nav a {
+                margin: 4px 0;
+                font-size: 1em;
+                width: 100%;
+            }
+            .menu-bar nav {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0 10px;
+            }
+            .menu-bar nav a {
+                margin: 4px 0;
+                font-size: 1em;
+                width: 100%;
+            }
+        }
+        table, th, td {
+            font-size: 1.13em !important;
+            padding: 14px 12px !important;
+        }
+        th {
+            font-weight: bold;
         }
     </style>
     <script>
+        // 將所有 menu 的 section 預設隱藏，僅選擇功能後顯示
+        function hideAllSections(menuId) {
+            var menu = document.getElementById(menuId);
+            if (!menu) return;
+            var sections = menu.querySelectorAll('.section');
+            sections.forEach(function(sec) { sec.style.display = 'none'; });
+        }
+        // 以 showSection 為例，其他 showXXXSection 也需同理調整
         function showSection() {
             var select = document.getElementById('functionSelect');
-            var addSection = document.getElementById('addSection');
-            var deleteSection = document.getElementById('deleteSection');
-            var searchSection = document.getElementById('searchSection');
-            addSection.style.display = 'none';
-            deleteSection.style.display = 'none';
-            searchSection.style.display = 'none';
+            hideAllSections('teacherMenu');
             if (select.value === 'add') {
-                addSection.style.display = 'block';
+                document.getElementById('addSection').style.display = 'block';
             } else if (select.value === 'delete') {
-                deleteSection.style.display = 'block';
+                document.getElementById('deleteSection').style.display = 'block';
             } else if (select.value === 'search') {
-                searchSection.style.display = 'block';
+                document.getElementById('searchSection').style.display = 'block';
             }
         }
         function showUserSection() {
             var select = document.getElementById('userFunctionSelect');
-            var addUserSection = document.getElementById('addUserSection');
-            var editUserSection = document.getElementById('editUserSection');
-            addUserSection.style.display = 'none';
-            editUserSection.style.display = 'none';
+            hideAllSections('userMenu');
             if (select.value === 'add') {
-                addUserSection.style.display = 'block';
+                document.getElementById('addUserSection').style.display = 'block';
             } else if (select.value === 'edit') {
-                editUserSection.style.display = 'block';
+                document.getElementById('editUserSection').style.display = 'block';
             }
         }
         function showEduSection() {
             var select = document.getElementById('eduFunctionSelect');
-            var addSection = document.getElementById('addEduSection');
-            var deleteSection = document.getElementById('deleteEduSection');
-            var searchSection = document.getElementById('searchEduSection');
-            addSection.style.display = 'none';
-            deleteSection.style.display = 'none';
-            searchSection.style.display = 'none';
+            hideAllSections('eduMenu');
             if (select.value === 'add') {
-                addSection.style.display = 'block';
+                document.getElementById('addEduSection').style.display = 'block';
             } else if (select.value === 'delete') {
-                deleteSection.style.display = 'block';
+                document.getElementById('deleteEduSection').style.display = 'block';
             } else if (select.value === 'search') {
-                searchSection.style.display = 'block';
+                document.getElementById('searchEduSection').style.display = 'block';
             }
         }
         function showExpSection() {
             var select = document.getElementById('expFunctionSelect');
-            var addSection = document.getElementById('addExpSection');
-            var deleteSection = document.getElementById('deleteExpSection');
-            var searchSection = document.getElementById('searchExpSection');
-            addSection.style.display = 'none';
-            deleteSection.style.display = 'none';
-            searchSection.style.display = 'none';
+            hideAllSections('expMenu');
             if (select.value === 'add') {
-                addSection.style.display = 'block';
+                document.getElementById('addExpSection').style.display = 'block';
             } else if (select.value === 'delete') {
-                deleteSection.style.display = 'block';
+                document.getElementById('deleteExpSection').style.display = 'block';
             } else if (select.value === 'search') {
-                searchSection.style.display = 'block';
+                document.getElementById('searchExpSection').style.display = 'block';
             }
         }
         function showAwardSection() {
             var select = document.getElementById('awardFunctionSelect');
-            var addSection = document.getElementById('addAwardSection');
-            var deleteSection = document.getElementById('deleteAwardSection');
-            var searchSection = document.getElementById('searchAwardSection');
-            addSection.style.display = 'none';
-            deleteSection.style.display = 'none';
-            searchSection.style.display = 'none';
+            hideAllSections('awardMenu');
             if (select.value === 'add') {
-                addSection.style.display = 'block';
+                document.getElementById('addAwardSection').style.display = 'block';
             } else if (select.value === 'delete') {
-                deleteSection.style.display = 'block';
+                document.getElementById('deleteAwardSection').style.display = 'block';
             } else if (select.value === 'search') {
-                searchSection.style.display = 'block';
+                document.getElementById('searchAwardSection').style.display = 'block';
             }
         }
         function showProjectSection() {
             var select = document.getElementById('projectFunctionSelect');
-            var addSection = document.getElementById('addProjectSection');
-            var deleteSection = document.getElementById('deleteProjectSection');
-            var searchSection = document.getElementById('searchProjectSection');
-            addSection.style.display = 'none';
-            deleteSection.style.display = 'none';
-            searchSection.style.display = 'none';
+            hideAllSections('projectMenu');
             if (select.value === 'add') {
-                addSection.style.display = 'block';
+                document.getElementById('addProjectSection').style.display = 'block';
             } else if (select.value === 'delete') {
-                deleteSection.style.display = 'block';
+                document.getElementById('deleteProjectSection').style.display = 'block';
             } else if (select.value === 'search') {
-                searchSection.style.display = 'block';
+                document.getElementById('searchProjectSection').style.display = 'block';
             }
         }
         function showSpeechSection() {
             var select = document.getElementById('speechFunctionSelect');
-            var addSection = document.getElementById('addSpeechSection');
-            var deleteSection = document.getElementById('deleteSpeechSection');
-            var searchSection = document.getElementById('searchSpeechSection');
-            addSection.style.display = 'none';
-            deleteSection.style.display = 'none';
-            searchSection.style.display = 'none';
+            hideAllSections('speechMenu');
             if (select.value === 'add') {
-                addSection.style.display = 'block';
+                document.getElementById('addSpeechSection').style.display = 'block';
             } else if (select.value === 'delete') {
-                deleteSection.style.display = 'block';
+                document.getElementById('deleteSpeechSection').style.display = 'block';
             } else if (select.value === 'search') {
-                searchSection.style.display = 'block';
+                document.getElementById('searchSpeechSection').style.display = 'block';
             }
         }
         function showTeachMatSection() {
             var select = document.getElementById('teachmatFunctionSelect');
-            var addSection = document.getElementById('addTeachMatSection');
-            var deleteSection = document.getElementById('deleteTeachMatSection');
-            var searchSection = document.getElementById('searchTeachMatSection');
-            addSection.style.display = 'none';
-            deleteSection.style.display = 'none';
-            searchSection.style.display = 'none';
+            hideAllSections('teachmatMenu');
             if (select.value === 'add') {
-                addSection.style.display = 'block';
+                document.getElementById('addTeachMatSection').style.display = 'block';
             } else if (select.value === 'delete') {
-                deleteSection.style.display = 'block';
+                document.getElementById('deleteTeachMatSection').style.display = 'block';
             } else if (select.value === 'search') {
-                searchSection.style.display = 'block';
+                document.getElementById('searchTeachMatSection').style.display = 'block';
             }
         }
         function showPatentSection() {
             var select = document.getElementById('patentFunctionSelect');
-            var addSection = document.getElementById('addPatentSection');
-            var deleteSection = document.getElementById('deletePatentSection');
-            var searchSection = document.getElementById('searchPatentSection');
-            addSection.style.display = 'none';
-            deleteSection.style.display = 'none';
-            searchSection.style.display = 'none';
+            hideAllSections('patentMenu');
             if (select.value === 'add') {
-                addSection.style.display = 'block';
+                document.getElementById('addPatentSection').style.display = 'block';
             } else if (select.value === 'delete') {
-                deleteSection.style.display = 'block';
+                document.getElementById('deletePatentSection').style.display = 'block';
             } else if (select.value === 'search') {
-                searchSection.style.display = 'block';
+                document.getElementById('searchPatentSection').style.display = 'block';
             }
         }
         window.onload = function() {
-            showSection();
-            // 預設不顯示教師功能選單
+            // 預設全部功能選單都隱藏
             document.getElementById('teacherMenu').style.display = 'none';
             document.getElementById('userMenu').style.display = 'none';
             document.getElementById('eduMenu').style.display = 'none';
@@ -305,27 +401,72 @@ include('db.php');
             document.getElementById('teachmatMenu').style.display = 'none';
             document.getElementById('patentMenu').style.display = 'none';
         };
+        // 維護選單按鈕點擊時只顯示下拉選單
+        document.addEventListener('DOMContentLoaded', function() {
+            var menuMap = {
+                navTeacher: 'teacherMenu',
+                navLogin: 'userMenu',
+                navEdu: 'eduMenu',
+                navExp: 'expMenu',
+                navAward: 'awardMenu',
+                navProject: 'projectMenu',
+                navSpeech: 'speechMenu',
+                navTeachMat: 'teachmatMenu',
+                navPatent: 'patentMenu'
+            };
+            Object.keys(menuMap).forEach(function(navId) {
+                var navBtn = document.getElementById(navId);
+                if (navBtn) {
+                    navBtn.onclick = function(e) {
+                        e.preventDefault();
+                        // 全部隱藏
+                        Object.values(menuMap).forEach(function(menuId) {
+                            var menu = document.getElementById(menuId);
+                            if (menu) menu.style.display = 'none';
+                        });
+                        // 取消所有 active 樣式
+                        Object.keys(menuMap).forEach(function(otherId) {
+                            var otherBtn = document.getElementById(otherId);
+                            if (otherBtn) otherBtn.classList.remove('active');
+                        });
+                        // 設定目前按鈕為 active
+                        navBtn.classList.add('active');
+                        // 顯示對應下拉選單
+                        var menu = document.getElementById(menuMap[navId]);
+                        if (menu) {
+                            menu.style.display = 'block';
+                            // 隱藏所有 section
+                            var sections = menu.querySelectorAll('.section');
+                            sections.forEach(function(sec) { sec.style.display = 'none'; });
+                            // 重設下拉選單
+                            var select = menu.querySelector('select');
+                            if (select) select.value = '';
+                        }
+                    };
+                }
+            });
+        });
     </script>
 </head>
 <body>
     <h1>教師後台管理</h1>
     <a href="index.php" style="float:right; margin: 20px 120px 0 0; font-size: 1.1em;">回前台</a>
     <a href="logout.php" style="float:right; margin: 20px 40px 0 0; font-size: 1.1em;">登出</a>
+    <div class="menu-bar">
+        <nav>
+            <a href="#" id="navTeacher">維護教師資訊</a>
+            <a href="#" id="navEdu">維護學歷資料</a>
+            <a href="#" id="navExp">維護經歷資料</a>
+            <a href="#" id="navAward">維護獲獎資料</a>
+            <a href="#" id="navProject">維護計畫資料</a>
+            <a href="#" id="navSpeech">維護演講資料</a>
+            <a href="#" id="navTeachMat">維護教材與作品</a>
+            <a href="#" id="navPatent">維護專利</a>
+            <a href="#" id="navSchedule">維護課表</a>
+            <a href="#" id="navLogin">維護登入資訊</a>
+        </nav>
+    </div>
     <div class="container">
-        <div style="margin-bottom: 24px;">
-            <nav style="background:#fff;padding:12px 0 12px 0;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.07);text-align:center;">
-                <a href="#" id="navTeacher" style="margin:0 18px;font-weight:bold;">維護教師資訊</a>
-                <a href="#" id="navEdu" style="margin:0 18px;font-weight:bold;">維護學歷資料</a>
-                <a href="#" id="navExp" style="margin:0 18px;font-weight:bold;">維護經歷資料</a>
-                <a href="#" id="navAward" style="margin:0 18px;font-weight:bold;">維護獲獎資料</a>
-                <a href="#" id="navProject" style="margin:0 18px;font-weight:bold;">維護計畫資料</a>
-                <a href="#" id="navSpeech" style="margin:0 18px;font-weight:bold;">維護演講資料</a>
-                <a href="#" id="navTeachMat" style="margin:0 18px;font-weight:bold;">維護教材與作品</a>
-                <a href="#" id="navPatent" style="margin:0 18px;font-weight:bold;">維護專利</a>
-                <a href="#" id="navSchedule" style="margin:0 18px;font-weight:bold;">維護課表</a>
-                <a href="#" id="navLogin" style="margin:0 18px;font-weight:bold;">維護登入資訊</a>
-            </nav>
-        </div>
         <div id="teacherMenu" style="display:none;">
             <label for="functionSelect"><strong>請選擇功能：</strong></label>
             <select id="functionSelect" onchange="showSection()">
@@ -334,7 +475,7 @@ include('db.php');
                 <option value="delete">修改/刪除教師</option>
                 <option value="search">查詢教師</option>
             </select>
-            <div id="addSection" class="section">
+            <div id="addSection" class="section" style="display:none;">
                 <h2>新增教師</h2>
                 <form action="info_add.php" method="post">
                     <label>教師編號：
@@ -355,10 +496,9 @@ include('db.php');
                     <button type="submit">新增</button>
                 </form>
             </div>
-
-            <div id="deleteSection" class="section">
+            <div id="deleteSection" class="section" style="display:none;">
                 <h2>修改/刪除教師</h2>
-                <table>
+                <table class="teacher-table">
                     <tr>
                         <th>教師編號</th>
                         <th>姓名</th>
@@ -384,26 +524,13 @@ include('db.php');
                     <?php endwhile; ?>
                 </table>
             </div>
-
-            <div id="searchSection" class="section">
+            <div id="searchSection" class="section" style="display:none;">
                 <h2>查詢教師</h2>
                 <form id="searchForm" method="post" action="info_search.php" onsubmit="return false;">
                     <input type="text" name="search_keyword" placeholder="請輸入姓名或職稱關鍵字" required>
                     <button type="submit">查詢</button>
                 </form>
                 <div id="searchResult"></div>
-                <script>
-                document.getElementById('searchForm').onsubmit = function() {
-                    var form = this;
-                    var formData = new FormData(form);
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', form.action, true);
-                    xhr.onload = function() {
-                        document.getElementById('searchResult').innerHTML = xhr.responseText;
-                    };
-                    xhr.send(formData);
-                };
-                </script>
             </div>
         </div>
 
@@ -414,7 +541,7 @@ include('db.php');
                 <option value="add">新增帳號</option>
                 <option value="edit">修改帳號</option>
             </select>
-            <div id="addUserSection" class="section">
+            <div id="addUserSection" class="section" style="display:none;">
                 <h2>新增帳號</h2>
                 <form method="post" action="user_manage.php">
                     <input type="text" name="username" placeholder="帳號" required>
@@ -422,7 +549,7 @@ include('db.php');
                     <button type="submit" name="add_user">新增帳號</button>
                 </form>
             </div>
-            <div id="editUserSection" class="section">
+            <div id="editUserSection" class="section" style="display:none;">
                 <h2>修改帳號</h2>
                 <form method="post" action="user_manage.php">
                     <table>
@@ -455,7 +582,7 @@ include('db.php');
                 <option value="delete">修改/刪除學歷</option>
                 <option value="search">查詢學歷</option>
             </select>
-            <div id="addEduSection" class="section">
+            <div id="addEduSection" class="section" style="display:none;">
                 <h2>新增學歷</h2>
                 <form action="edu_add.php" method="post">
                     <label>教師編號：<input type="text" name="Prof_ID" required></label>
@@ -465,7 +592,7 @@ include('db.php');
                     <button type="submit">新增</button>
                 </form>
             </div>
-            <div id="deleteEduSection" class="section">
+            <div id="deleteEduSection" class="section" style="display:none;">
                 <h2>修改/刪除學歷</h2>
                 <table>
                     <tr>
@@ -493,25 +620,13 @@ include('db.php');
                     <?php endwhile; ?>
                 </table>
             </div>
-            <div id="searchEduSection" class="section">
+            <div id="searchEduSection" class="section" style="display:none;">
                 <h2>查詢學歷</h2>
                 <form id="searchEduForm" method="post" action="edu_search.php" onsubmit="return false;">
                     <input type="text" name="search_keyword" placeholder="請輸入學校、系所或學位關鍵字" required>
                     <button type="submit">查詢</button>
                 </form>
                 <div id="searchEduResult"></div>
-                <script>
-                document.getElementById('searchEduForm').onsubmit = function() {
-                    var form = this;
-                    var formData = new FormData(form);
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', form.action, true);
-                    xhr.onload = function() {
-                        document.getElementById('searchEduResult').innerHTML = xhr.responseText;
-                    };
-                    xhr.send(formData);
-                };
-                </script>
             </div>
         </div>
 
@@ -523,7 +638,7 @@ include('db.php');
                 <option value="delete">修改/刪除經歷</option>
                 <option value="search">查詢經歷</option>
             </select>
-            <div id="addExpSection" class="section">
+            <div id="addExpSection" class="section" style="display:none;">
                 <h2>新增經歷</h2>
                 <form action="exp_add.php" method="post">
                     <label>教師編號：<input type="text" name="Prof_ID" required></label>
@@ -532,7 +647,7 @@ include('db.php');
                     <button type="submit">新增</button>
                 </form>
             </div>
-            <div id="deleteExpSection" class="section">
+            <div id="deleteExpSection" class="section" style="display:none;">
                 <h2>修改/刪除經歷</h2>
                 <table>
                     <tr>
@@ -558,25 +673,13 @@ include('db.php');
                     <?php endwhile; ?>
                 </table>
             </div>
-            <div id="searchExpSection" class="section">
+            <div id="searchExpSection" class="section" style="display:none;">
                 <h2>查詢經歷</h2>
                 <form id="searchExpForm" method="post" action="exp_search.php" onsubmit="return false;">
                     <input type="text" name="search_keyword" placeholder="請輸入經歷類型或職稱關鍵字" required>
                     <button type="submit">查詢</button>
                 </form>
                 <div id="searchExpResult"></div>
-                <script>
-                document.getElementById('searchExpForm').onsubmit = function() {
-                    var form = this;
-                    var formData = new FormData(form);
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', form.action, true);
-                    xhr.onload = function() {
-                        document.getElementById('searchExpResult').innerHTML = xhr.responseText;
-                    };
-                    xhr.send(formData);
-                };
-                </script>
             </div>
         </div>
 
@@ -588,7 +691,7 @@ include('db.php');
                 <option value="delete">修改/刪除獎項</option>
                 <option value="search">查詢獎項</option>
             </select>
-            <div id="addAwardSection" class="section">
+            <div id="addAwardSection" class="section" style="display:none;">
                 <h2>新增獎項</h2>
                 <form action="award_add.php" method="post">
                     <label>教師編號：<input type="text" name="Prof_ID" required></label>
@@ -600,7 +703,7 @@ include('db.php');
                     <button type="submit">新增</button>
                 </form>
             </div>
-            <div id="deleteAwardSection" class="section">
+            <div id="deleteAwardSection" class="section" style="display:none;">
                 <h2>修改/刪除獎項</h2>
                 <table>
                     <tr>
@@ -632,25 +735,13 @@ include('db.php');
                     <?php endwhile; ?>
                 </table>
             </div>
-            <div id="searchAwardSection" class="section">
+            <div id="searchAwardSection" class="section" style="display:none;">
                 <h2>查詢獎項</h2>
                 <form id="searchAwardForm" method="post" action="award_search.php" onsubmit="return false;">
                     <input type="text" name="search_keyword" placeholder="請輸入學生、作品、競賽或主辦單位關鍵字" required>
                     <button type="submit">查詢</button>
                 </form>
                 <div id="searchAwardResult"></div>
-                <script>
-                document.getElementById('searchAwardForm').onsubmit = function() {
-                    var form = this;
-                    var formData = new FormData(form);
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', form.action, true);
-                    xhr.onload = function() {
-                        document.getElementById('searchAwardResult').innerHTML = xhr.responseText;
-                    };
-                    xhr.send(formData);
-                };
-                </script>
             </div>
         </div>
 
@@ -662,7 +753,7 @@ include('db.php');
                 <option value="delete">修改/刪除計畫</option>
                 <option value="search">查詢計畫</option>
             </select>
-            <div id="addProjectSection" class="section">
+            <div id="addProjectSection" class="section" style="display:none;">
                 <h2>新增計畫</h2>
                 <form action="project_add.php" method="post">
                     <label>教師編號：<input type="text" name="Prof_ID" required></label>
@@ -679,7 +770,7 @@ include('db.php');
                     <button type="submit">新增</button>
                 </form>
             </div>
-            <div id="deleteProjectSection" class="section">
+            <div id="deleteProjectSection" class="section" style="display:none;">
                 <h2>修改/刪除計畫</h2>
                 <table>
                     <tr>
@@ -709,25 +800,13 @@ include('db.php');
                     <?php endwhile; ?>
                 </table>
             </div>
-            <div id="searchProjectSection" class="section">
+            <div id="searchProjectSection" class="section" style="display:none;">
                 <h2>查詢計畫</h2>
                 <form id="searchProjectForm" method="post" action="project_search.php" onsubmit="return false;">
                     <input type="text" name="search_keyword" placeholder="請輸入計畫名稱、期間、類型或職務關鍵字" required>
                     <button type="submit">查詢</button>
                 </form>
                 <div id="searchProjectResult"></div>
-                <script>
-                document.getElementById('searchProjectForm').onsubmit = function() {
-                    var form = this;
-                    var formData = new FormData(form);
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', form.action, true);
-                    xhr.onload = function() {
-                        document.getElementById('searchProjectResult').innerHTML = xhr.responseText;
-                    };
-                    xhr.send(formData);
-                };
-                </script>
             </div>
         </div>
 
@@ -739,7 +818,7 @@ include('db.php');
                 <option value="delete">修改/刪除演講</option>
                 <option value="search">查詢演講</option>
             </select>
-            <div id="addSpeechSection" class="section">
+            <div id="addSpeechSection" class="section" style="display:none;">
                 <h2>新增演講</h2>
                 <form action="speech_add.php" method="post">
                     <label>教師編號：<input type="text" name="Prof_ID" required></label>
@@ -749,7 +828,7 @@ include('db.php');
                     <button type="submit">新增</button>
                 </form>
             </div>
-            <div id="deleteSpeechSection" class="section">
+            <div id="deleteSpeechSection" class="section" style="display:none;">
                 <h2>修改/刪除演講</h2>
                 <table>
                     <tr>
@@ -777,25 +856,13 @@ include('db.php');
                     <?php endwhile; ?>
                 </table>
             </div>
-            <div id="searchSpeechSection" class="section">
+            <div id="searchSpeechSection" class="section" style="display:none;">
                 <h2>查詢演講</h2>
                 <form id="searchSpeechForm" method="post" action="speech_search.php" onsubmit="return false;">
                     <input type="text" name="search_keyword" placeholder="請輸入演講名稱或對象關鍵字" required>
                     <button type="submit">查詢</button>
                 </form>
                 <div id="searchSpeechResult"></div>
-                <script>
-                document.getElementById('searchSpeechForm').onsubmit = function() {
-                    var form = this;
-                    var formData = new FormData(form);
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', form.action, true);
-                    xhr.onload = function() {
-                        document.getElementById('searchSpeechResult').innerHTML = xhr.responseText;
-                    };
-                    xhr.send(formData);
-                };
-                </script>
             </div>
         </div>
 
@@ -807,7 +874,7 @@ include('db.php');
                 <option value="delete">修改/刪除教材與作品</option>
                 <option value="search">查詢教材與作品</option>
             </select>
-            <div id="addTeachMatSection" class="section">
+            <div id="addTeachMatSection" class="section" style="display:none;">
                 <h2>新增教材與作品</h2>
                 <form action="teachmat_add.php" method="post">
                     <label>教師編號：<input type="text" name="Prof_ID" required></label>
@@ -817,7 +884,7 @@ include('db.php');
                     <button type="submit">新增</button>
                 </form>
             </div>
-            <div id="deleteTeachMatSection" class="section">
+            <div id="deleteTeachMatSection" class="section" style="display:none;">
                 <h2>修改/刪除教材與作品</h2>
                 <table>
                     <tr>
@@ -845,25 +912,13 @@ include('db.php');
                     <?php endwhile; ?>
                 </table>
             </div>
-            <div id="searchTeachMatSection" class="section">
+            <div id="searchTeachMatSection" class="section" style="display:none;">
                 <h2>查詢教材與作品</h2>
                 <form id="searchTeachMatForm" method="post" action="teachmat_search.php" onsubmit="return false;">
                     <input type="text" name="search_keyword" placeholder="請輸入作者、名稱或出版社關鍵字" required>
                     <button type="submit">查詢</button>
                 </form>
                 <div id="searchTeachMatResult"></div>
-                <script>
-                document.getElementById('searchTeachMatForm').onsubmit = function() {
-                    var form = this;
-                    var formData = new FormData(form);
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', form.action, true);
-                    xhr.onload = function() {
-                        document.getElementById('searchTeachMatResult').innerHTML = xhr.responseText;
-                    };
-                    xhr.send(formData);
-                };
-                </script>
             </div>
         </div>
 
@@ -875,7 +930,7 @@ include('db.php');
                 <option value="delete">修改/刪除專利</option>
                 <option value="search">查詢專利</option>
             </select>
-            <div id="addPatentSection" class="section">
+            <div id="addPatentSection" class="section" style="display:none;">
                 <h2>新增專利</h2>
                 <form action="patent_add.php" method="post">
                     <label>教師編號：<input type="text" name="Prof_ID" required></label>
@@ -884,7 +939,7 @@ include('db.php');
                     <button type="submit">新增</button>
                 </form>
             </div>
-            <div id="deletePatentSection" class="section">
+            <div id="deletePatentSection" class="section" style="display:none;">
                 <h2>修改/刪除專利</h2>
                 <table>
                     <tr>
@@ -910,25 +965,13 @@ include('db.php');
                     <?php endwhile; ?>
                 </table>
             </div>
-            <div id="searchPatentSection" class="section">
+            <div id="searchPatentSection" class="section" style="display:none;">
                 <h2>查詢專利</h2>
                 <form id="searchPatentForm" method="post" action="patent_search.php" onsubmit="return false;">
                     <input type="text" name="search_keyword" placeholder="請輸入專利類型或名稱關鍵字" required>
                     <button type="submit">查詢</button>
                 </form>
                 <div id="searchPatentResult"></div>
-                <script>
-                document.getElementById('searchPatentForm').onsubmit = function() {
-                    var form = this;
-                    var formData = new FormData(form);
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', form.action, true);
-                    xhr.onload = function() {
-                        document.getElementById('searchPatentResult').innerHTML = xhr.responseText;
-                    };
-                    xhr.send(formData);
-                };
-                </script>
             </div>
         </div>
         <script>
@@ -943,6 +986,10 @@ include('db.php');
             document.getElementById('speechMenu').style.display = 'none';
             document.getElementById('teachmatMenu').style.display = 'none';
             document.getElementById('patentMenu').style.display = 'none';
+            // section 全部隱藏
+            hideAllSections('teacherMenu');
+            // select 重設
+            document.getElementById('functionSelect').value = '';
         };
         document.getElementById('navEdu').onclick = function(e) {
             e.preventDefault();
@@ -955,6 +1002,8 @@ include('db.php');
             document.getElementById('speechMenu').style.display = 'none';
             document.getElementById('teachmatMenu').style.display = 'none';
             document.getElementById('patentMenu').style.display = 'none';
+            hideAllSections('eduMenu');
+            document.getElementById('eduFunctionSelect').value = '';
         };
         document.getElementById('navExp').onclick = function(e) {
             e.preventDefault();
@@ -967,6 +1016,8 @@ include('db.php');
             document.getElementById('speechMenu').style.display = 'none';
             document.getElementById('teachmatMenu').style.display = 'none';
             document.getElementById('patentMenu').style.display = 'none';
+            hideAllSections('expMenu');
+            document.getElementById('expFunctionSelect').value = '';
         };
         document.getElementById('navAward').onclick = function(e) {
             e.preventDefault();
@@ -979,6 +1030,8 @@ include('db.php');
             document.getElementById('speechMenu').style.display = 'none';
             document.getElementById('teachmatMenu').style.display = 'none';
             document.getElementById('patentMenu').style.display = 'none';
+            hideAllSections('awardMenu');
+            document.getElementById('awardFunctionSelect').value = '';
         };
         document.getElementById('navProject').onclick = function(e) {
             e.preventDefault();
@@ -991,6 +1044,8 @@ include('db.php');
             document.getElementById('speechMenu').style.display = 'none';
             document.getElementById('teachmatMenu').style.display = 'none';
             document.getElementById('patentMenu').style.display = 'none';
+            hideAllSections('projectMenu');
+            document.getElementById('projectFunctionSelect').value = '';
         };
         document.getElementById('navSpeech').onclick = function(e) {
             e.preventDefault();
@@ -1003,6 +1058,8 @@ include('db.php');
             document.getElementById('speechMenu').style.display = 'block';
             document.getElementById('teachmatMenu').style.display = 'none';
             document.getElementById('patentMenu').style.display = 'none';
+            hideAllSections('speechMenu');
+            document.getElementById('speechFunctionSelect').value = '';
         };
         document.getElementById('navTeachMat').onclick = function(e) {
             e.preventDefault();
@@ -1015,6 +1072,8 @@ include('db.php');
             document.getElementById('speechMenu').style.display = 'none';
             document.getElementById('teachmatMenu').style.display = 'block';
             document.getElementById('patentMenu').style.display = 'none';
+            hideAllSections('teachmatMenu');
+            document.getElementById('teachmatFunctionSelect').value = '';
         };
         document.getElementById('navPatent').onclick = function(e) {
             e.preventDefault();
@@ -1027,6 +1086,8 @@ include('db.php');
             document.getElementById('speechMenu').style.display = 'none';
             document.getElementById('teachmatMenu').style.display = 'none';
             document.getElementById('patentMenu').style.display = 'block';
+            hideAllSections('patentMenu');
+            document.getElementById('patentFunctionSelect').value = '';
         };
         document.getElementById('navSchedule').onclick = function(e) {
             e.preventDefault();
@@ -1050,6 +1111,31 @@ include('db.php');
             document.getElementById('teachmatMenu').style.display = 'none';
             document.getElementById('patentMenu').style.display = 'none';
         };
+        // 通用AJAX查詢功能
+        function setupAjaxSearch(formId, resultId, searchUrl) {
+            var form = document.getElementById(formId);
+            if (!form) return;
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                var formData = new FormData(form);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', searchUrl, true);
+                xhr.onload = function() {
+                    document.getElementById(resultId).innerHTML = xhr.responseText;
+                };
+                xhr.send(formData);
+            };
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            setupAjaxSearch('searchForm', 'searchResult', 'info_search.php');
+            setupAjaxSearch('searchEduForm', 'searchEduResult', 'edu_search.php');
+            setupAjaxSearch('searchExpForm', 'searchExpResult', 'exp_search.php');
+            setupAjaxSearch('searchAwardForm', 'searchAwardResult', 'award_search.php');
+            setupAjaxSearch('searchProjectForm', 'searchProjectResult', 'project_search.php');
+            setupAjaxSearch('searchSpeechForm', 'searchSpeechResult', 'speech_search.php');
+            setupAjaxSearch('searchTeachMatForm', 'searchTeachMatResult', 'teachmat_search.php');
+            setupAjaxSearch('searchPatentForm', 'searchPatentResult', 'patent_search.php');
+        });
         </script>
     </div>
 </body>

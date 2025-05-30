@@ -29,14 +29,19 @@ if ($id) {
 <head>
     <meta charset="UTF-8">
     <title>刪除教材與作品資料</title>
+    <script>
+    window.onload = function() {
+        var msg = '';
+        <?php if ($success): ?>
+            msg = '刪除成功！';
+        <?php else: ?>
+            msg = <?= json_encode($error) ?>;
+        <?php endif; ?>
+        alert(msg);
+        window.location.href = 'dashboard.php?tab=teachmat';
+    };
+    </script>
 </head>
 <body>
-    <?php if ($success): ?>
-        <div style="color:green;">刪除成功！</div>
-        <a href="dashboard.php?tab=teachmat">回首頁</a>
-    <?php else: ?>
-        <div style="color:red;"><?= $error ?></div>
-        <a href="dashboard.php?tab=teachmat">回首頁</a>
-    <?php endif; ?>
 </body>
 </html>

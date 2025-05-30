@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['search_keyword'])) {
             echo '</tr>';
         }
         echo '</table></div>';
-        echo '<div style="margin-top:20px;text-align:center;"><a href="dashboard.php?tab=patent" style="display:inline-block;padding:8px 24px;background:#007bff;color:#fff;border-radius:4px;text-decoration:none;font-size:1em;">回後台</a></div>';
+        // 不顯示回後台按鈕
     }
 } else {
     echo '請輸入查詢關鍵字';

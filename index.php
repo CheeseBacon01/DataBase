@@ -10,32 +10,41 @@ $result = $mysqli->query("SELECT * FROM teachers");
     <title>逢甲資訊系統</title>
     <style>
         body {
-            font-family: "Microsoft JhengHei", Arial, sans-serif;
-            background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
-            min-height: 100vh;
-            margin: 0;
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: #f3f4f6;
+            color: #222;
         }
         .navbar {
+            background: #fffbe8;
+            color: #222;
+            box-shadow: 0 2px 16px #e0e0c0;
+            border-radius: 0 0 18px 18px;
+            padding: 0 32px 0 32px;
+            position: relative;
+            min-height: 64px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            background: #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-            padding: 0 40px;
-            height: 64px;
+            justify-content: space-between;
         }
         .navbar-title {
+            color: #222;
             font-size: 1.5em;
             font-weight: bold;
-            color: #007bff;
             letter-spacing: 2px;
+            text-shadow: none;
+            padding: 0 0 0 8px;
         }
         .navbar-menu {
             display: flex;
             gap: 32px;
+            position: absolute;
+            right: 32px;
+            top: 50%;
+            transform: translateY(-50%);
         }
         .navbar-menu a {
-            color: #2d3a4b;
+            color: #222;
+            text-shadow: none;
             text-decoration: none;
             font-size: 1.1em;
             padding: 8px 0;
@@ -45,7 +54,7 @@ $result = $mysqli->query("SELECT * FROM teachers");
             color: #007bff;
         }
         .msg-warning {
-            color: #dc3545;
+            color: #ff5e5e;
             text-align: center;
             margin-top: 16px;
             font-size: 1.1em;
@@ -53,29 +62,33 @@ $result = $mysqli->query("SELECT * FROM teachers");
         h1 {
             text-align: center;
             margin-top: 40px;
-            color: #2d3a4b;
+            color: #222;
             letter-spacing: 2px;
-            text-shadow: 1px 2px 8px #fff8;
+            text-shadow: none;
         }
         .container {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             gap: 24px;
             margin: 40px auto;
             max-width: 1100px;
         }
         .card {
-            background: #fff;
+            background: #e5e6ea;
             border-radius: 14px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+            box-shadow: 0 2px 8px #e0e0e0;
             padding: 28px 36px;
             width: 320px;
             margin-bottom: 20px;
             transition: box-shadow 0.2s, transform 0.2s;
+            color: #222;
+            border: 1.5px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
         }
         .card:hover {
-            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+            box-shadow: 0 8px 24px #d0d0d0;
             transform: translateY(-4px) scale(1.03);
         }
         .card-title {
@@ -83,10 +96,12 @@ $result = $mysqli->query("SELECT * FROM teachers");
             font-weight: bold;
             margin-bottom: 8px;
             color: #007bff;
+            letter-spacing: 1px;
+            text-shadow: none;
         }
         .card-info {
             margin-bottom: 6px;
-            color: #333;
+            color: #222;
         }
         .card-label {
             color: #888;
@@ -94,10 +109,22 @@ $result = $mysqli->query("SELECT * FROM teachers");
             margin-right: 4px;
         }
         @media (max-width: 700px) {
-            .navbar { flex-direction: column; height: auto; padding: 0 10px; }
-            .navbar-menu { gap: 16px; }
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 0 10px;
+                border-radius: 0 0 12px 12px;
+            }
+            .navbar-menu {
+                position: static;
+                transform: none;
+                right: 0;
+                top: 0;
+                gap: 16px;
+                margin-top: 8px;
+            }
             .container { flex-direction: column; align-items: center; }
-            .card { width: 90%; }
+            .card { width: 95%; }
         }
     </style>
 </head>

@@ -29,14 +29,21 @@ if ($id) {
 <head>
     <meta charset="UTF-8">
     <title>刪除獎項資料</title>
+    <script>
+    window.onload = function() {
+        var msg = '';
+        var isSuccess = false;
+        <?php if ($success): ?>
+            msg = '刪除成功！';
+            isSuccess = true;
+        <?php else: ?>
+            msg = <?= json_encode($error) ?>;
+        <?php endif; ?>
+        alert(msg);
+        window.location.href = 'dashboard.php?tab=award';
+    };
+    </script>
 </head>
 <body>
-    <?php if ($success): ?>
-        <div style="color:green;">刪除成功！</div>
-        <a href="dashboard.php?tab=award">回首頁</a>
-    <?php else: ?>
-        <div style="color:red;"><?= $error ?></div>
-        <a href="dashboard.php?tab=award">回首頁</a>
-    <?php endif; ?>
 </body>
 </html>
