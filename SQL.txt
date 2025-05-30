@@ -1,0 +1,53 @@
+經歷:
+
+CREATE TABLE Experience (
+    Experience_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Prof_ID VARCHAR(50) NOT NULL,
+    Experience_type VARCHAR(100) NOT NULL,
+    Experience_position VARCHAR(100) NOT NULL,
+    FOREIGN KEY (Prof_ID) REFERENCES teachers(Prof_ID)
+)
+
+指導學生獲獎:
+
+CREATE TABLE Award (
+    Award_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Prof_ID VARCHAR(50) NOT NULL,
+    Award_Advisee VARCHAR(100) NOT NULL,
+    Award_ProjectName VARCHAR(200) NOT NULL,
+    Award_CompName_Position VARCHAR(200) NOT NULL,
+    Award_Date DATE NOT NULL,
+    Award_organizer VARCHAR(200) NOT NULL,
+    FOREIGN KEY (Prof_ID) REFERENCES teachers(Prof_ID)
+)
+
+計畫:
+CREATE TABLE Project (
+    Project_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Prof_ID VARCHAR(50) NOT NULL,
+    Project_Name VARCHAR(200) NOT NULL,
+    Project_Duration VARCHAR(100) NOT NULL,
+    Project_Type ENUM('國科會', '產學合作') NOT NULL,
+    Project_TakenPosition VARCHAR(100) NOT NULL,
+    FOREIGN KEY (Prof_ID) REFERENCES teachers(Prof_ID)
+)
+
+學歷:
+CREATE TABLE EducationalBackground (
+    EduBG_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Prof_ID VARCHAR(50) NOT NULL,
+    EduBG_University VARCHAR(100) NOT NULL,
+    EduBG_Department VARCHAR(100) NOT NULL,
+    EduBG_Degree VARCHAR(50) NOT NULL,
+    FOREIGN KEY (Prof_ID) REFERENCES teachers(Prof_ID)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+演講:
+CREATE TABLE Speech (
+    Speech_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Prof_ID VARCHAR(50) NOT NULL,
+    Speech_Name VARCHAR(200) NOT NULL,
+    Speech_Audience VARCHAR(200) NOT NULL,
+    Speech_Date DATE NOT NULL,
+    FOREIGN KEY (Prof_ID) REFERENCES teachers(Prof_ID)
+)

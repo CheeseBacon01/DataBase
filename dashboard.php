@@ -180,11 +180,130 @@ include('db.php');
                 editUserSection.style.display = 'block';
             }
         }
+        function showEduSection() {
+            var select = document.getElementById('eduFunctionSelect');
+            var addSection = document.getElementById('addEduSection');
+            var deleteSection = document.getElementById('deleteEduSection');
+            var searchSection = document.getElementById('searchEduSection');
+            addSection.style.display = 'none';
+            deleteSection.style.display = 'none';
+            searchSection.style.display = 'none';
+            if (select.value === 'add') {
+                addSection.style.display = 'block';
+            } else if (select.value === 'delete') {
+                deleteSection.style.display = 'block';
+            } else if (select.value === 'search') {
+                searchSection.style.display = 'block';
+            }
+        }
+        function showExpSection() {
+            var select = document.getElementById('expFunctionSelect');
+            var addSection = document.getElementById('addExpSection');
+            var deleteSection = document.getElementById('deleteExpSection');
+            var searchSection = document.getElementById('searchExpSection');
+            addSection.style.display = 'none';
+            deleteSection.style.display = 'none';
+            searchSection.style.display = 'none';
+            if (select.value === 'add') {
+                addSection.style.display = 'block';
+            } else if (select.value === 'delete') {
+                deleteSection.style.display = 'block';
+            } else if (select.value === 'search') {
+                searchSection.style.display = 'block';
+            }
+        }
+        function showAwardSection() {
+            var select = document.getElementById('awardFunctionSelect');
+            var addSection = document.getElementById('addAwardSection');
+            var deleteSection = document.getElementById('deleteAwardSection');
+            var searchSection = document.getElementById('searchAwardSection');
+            addSection.style.display = 'none';
+            deleteSection.style.display = 'none';
+            searchSection.style.display = 'none';
+            if (select.value === 'add') {
+                addSection.style.display = 'block';
+            } else if (select.value === 'delete') {
+                deleteSection.style.display = 'block';
+            } else if (select.value === 'search') {
+                searchSection.style.display = 'block';
+            }
+        }
+        function showProjectSection() {
+            var select = document.getElementById('projectFunctionSelect');
+            var addSection = document.getElementById('addProjectSection');
+            var deleteSection = document.getElementById('deleteProjectSection');
+            var searchSection = document.getElementById('searchProjectSection');
+            addSection.style.display = 'none';
+            deleteSection.style.display = 'none';
+            searchSection.style.display = 'none';
+            if (select.value === 'add') {
+                addSection.style.display = 'block';
+            } else if (select.value === 'delete') {
+                deleteSection.style.display = 'block';
+            } else if (select.value === 'search') {
+                searchSection.style.display = 'block';
+            }
+        }
+        function showSpeechSection() {
+            var select = document.getElementById('speechFunctionSelect');
+            var addSection = document.getElementById('addSpeechSection');
+            var deleteSection = document.getElementById('deleteSpeechSection');
+            var searchSection = document.getElementById('searchSpeechSection');
+            addSection.style.display = 'none';
+            deleteSection.style.display = 'none';
+            searchSection.style.display = 'none';
+            if (select.value === 'add') {
+                addSection.style.display = 'block';
+            } else if (select.value === 'delete') {
+                deleteSection.style.display = 'block';
+            } else if (select.value === 'search') {
+                searchSection.style.display = 'block';
+            }
+        }
+        function showTeachMatSection() {
+            var select = document.getElementById('teachmatFunctionSelect');
+            var addSection = document.getElementById('addTeachMatSection');
+            var deleteSection = document.getElementById('deleteTeachMatSection');
+            var searchSection = document.getElementById('searchTeachMatSection');
+            addSection.style.display = 'none';
+            deleteSection.style.display = 'none';
+            searchSection.style.display = 'none';
+            if (select.value === 'add') {
+                addSection.style.display = 'block';
+            } else if (select.value === 'delete') {
+                deleteSection.style.display = 'block';
+            } else if (select.value === 'search') {
+                searchSection.style.display = 'block';
+            }
+        }
+        function showPatentSection() {
+            var select = document.getElementById('patentFunctionSelect');
+            var addSection = document.getElementById('addPatentSection');
+            var deleteSection = document.getElementById('deletePatentSection');
+            var searchSection = document.getElementById('searchPatentSection');
+            addSection.style.display = 'none';
+            deleteSection.style.display = 'none';
+            searchSection.style.display = 'none';
+            if (select.value === 'add') {
+                addSection.style.display = 'block';
+            } else if (select.value === 'delete') {
+                deleteSection.style.display = 'block';
+            } else if (select.value === 'search') {
+                searchSection.style.display = 'block';
+            }
+        }
         window.onload = function() {
             showSection();
             // 預設不顯示教師功能選單
             document.getElementById('teacherMenu').style.display = 'none';
             document.getElementById('userMenu').style.display = 'none';
+            document.getElementById('eduMenu').style.display = 'none';
+            document.getElementById('expMenu').style.display = 'none';
+            document.getElementById('awardMenu').style.display = 'none';
+            document.getElementById('projectMenu').style.display = 'none';
+            document.getElementById('speechMenu').style.display = 'none';
+            document.getElementById('teachmatMenu').style.display = 'none';
+            document.getElementById('patentMenu').style.display = 'none';
         };
     </script>
 </head>
@@ -196,6 +315,13 @@ include('db.php');
         <div style="margin-bottom: 24px;">
             <nav style="background:#fff;padding:12px 0 12px 0;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.07);text-align:center;">
                 <a href="#" id="navTeacher" style="margin:0 18px;font-weight:bold;">維護教師資訊</a>
+                <a href="#" id="navEdu" style="margin:0 18px;font-weight:bold;">維護學歷資料</a>
+                <a href="#" id="navExp" style="margin:0 18px;font-weight:bold;">維護經歷資料</a>
+                <a href="#" id="navAward" style="margin:0 18px;font-weight:bold;">維護獲獎資料</a>
+                <a href="#" id="navProject" style="margin:0 18px;font-weight:bold;">維護計畫資料</a>
+                <a href="#" id="navSpeech" style="margin:0 18px;font-weight:bold;">維護演講資料</a>
+                <a href="#" id="navTeachMat" style="margin:0 18px;font-weight:bold;">維護教材與作品</a>
+                <a href="#" id="navPatent" style="margin:0 18px;font-weight:bold;">維護專利</a>
                 <a href="#" id="navSchedule" style="margin:0 18px;font-weight:bold;">維護課表</a>
                 <a href="#" id="navLogin" style="margin:0 18px;font-weight:bold;">維護登入資訊</a>
             </nav>
@@ -320,22 +446,609 @@ include('db.php');
                 </form>
             </div>
         </div>
+
+        <div id="eduMenu" style="display:none;">
+            <label for="eduFunctionSelect"><strong>請選擇功能：</strong></label>
+            <select id="eduFunctionSelect" onchange="showEduSection()">
+                <option value="">-- 請選擇 --</option>
+                <option value="add">新增學歷</option>
+                <option value="delete">修改/刪除學歷</option>
+                <option value="search">查詢學歷</option>
+            </select>
+            <div id="addEduSection" class="section">
+                <h2>新增學歷</h2>
+                <form action="edu_add.php" method="post">
+                    <label>教師編號：<input type="text" name="Prof_ID" required></label>
+                    <label>學校：<input type="text" name="EduBG_University" required></label>
+                    <label>系所：<input type="text" name="EduBG_Department" required></label>
+                    <label>學位：<input type="text" name="EduBG_Degree" required></label>
+                    <button type="submit">新增</button>
+                </form>
+            </div>
+            <div id="deleteEduSection" class="section">
+                <h2>修改/刪除學歷</h2>
+                <table>
+                    <tr>
+                        <th>學歷ID</th>
+                        <th>教師編號</th>
+                        <th>學校</th>
+                        <th>系所</th>
+                        <th>學位</th>
+                        <th>操作</th>
+                    </tr>
+                    <?php
+                    $resultEdu = $mysqli->query("SELECT * FROM EducationalBackground");
+                    while($row = $resultEdu->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['EduBG_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['Prof_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['EduBG_University']) ?></td>
+                        <td><?= htmlspecialchars($row['EduBG_Department']) ?></td>
+                        <td><?= htmlspecialchars($row['EduBG_Degree']) ?></td>
+                        <td>
+                            <a href="edu_edit.php?id=<?= urlencode($row['EduBG_ID']) ?>">修改</a>
+                            <a class="delete-link" href="edu_delete.php?id=<?= urlencode($row['EduBG_ID']) ?>" onclick="return confirm('確定要刪除嗎？');">刪除</a>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </table>
+            </div>
+            <div id="searchEduSection" class="section">
+                <h2>查詢學歷</h2>
+                <form id="searchEduForm" method="post" action="edu_search.php" onsubmit="return false;">
+                    <input type="text" name="search_keyword" placeholder="請輸入學校、系所或學位關鍵字" required>
+                    <button type="submit">查詢</button>
+                </form>
+                <div id="searchEduResult"></div>
+                <script>
+                document.getElementById('searchEduForm').onsubmit = function() {
+                    var form = this;
+                    var formData = new FormData(form);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', form.action, true);
+                    xhr.onload = function() {
+                        document.getElementById('searchEduResult').innerHTML = xhr.responseText;
+                    };
+                    xhr.send(formData);
+                };
+                </script>
+            </div>
+        </div>
+
+        <div id="expMenu" style="display:none;">
+            <label for="expFunctionSelect"><strong>請選擇功能：</strong></label>
+            <select id="expFunctionSelect" onchange="showExpSection()">
+                <option value="">-- 請選擇 --</option>
+                <option value="add">新增經歷</option>
+                <option value="delete">修改/刪除經歷</option>
+                <option value="search">查詢經歷</option>
+            </select>
+            <div id="addExpSection" class="section">
+                <h2>新增經歷</h2>
+                <form action="exp_add.php" method="post">
+                    <label>教師編號：<input type="text" name="Prof_ID" required></label>
+                    <label>經歷類型：<input type="text" name="Experience_type" required></label>
+                    <label>職稱/職位：<input type="text" name="Experience_position" required></label>
+                    <button type="submit">新增</button>
+                </form>
+            </div>
+            <div id="deleteExpSection" class="section">
+                <h2>修改/刪除經歷</h2>
+                <table>
+                    <tr>
+                        <th>經歷ID</th>
+                        <th>教師編號</th>
+                        <th>經歷類型</th>
+                        <th>職稱/職位</th>
+                        <th>操作</th>
+                    </tr>
+                    <?php
+                    $resultExp = $mysqli->query("SELECT * FROM Experience");
+                    while($row = $resultExp->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['Experience_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['Prof_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['Experience_type']) ?></td>
+                        <td><?= htmlspecialchars($row['Experience_position']) ?></td>
+                        <td>
+                            <a href="exp_edit.php?id=<?= urlencode($row['Experience_ID']) ?>">修改</a>
+                            <a class="delete-link" href="exp_delete.php?id=<?= urlencode($row['Experience_ID']) ?>" onclick="return confirm('確定要刪除嗎？');">刪除</a>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </table>
+            </div>
+            <div id="searchExpSection" class="section">
+                <h2>查詢經歷</h2>
+                <form id="searchExpForm" method="post" action="exp_search.php" onsubmit="return false;">
+                    <input type="text" name="search_keyword" placeholder="請輸入經歷類型或職稱關鍵字" required>
+                    <button type="submit">查詢</button>
+                </form>
+                <div id="searchExpResult"></div>
+                <script>
+                document.getElementById('searchExpForm').onsubmit = function() {
+                    var form = this;
+                    var formData = new FormData(form);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', form.action, true);
+                    xhr.onload = function() {
+                        document.getElementById('searchExpResult').innerHTML = xhr.responseText;
+                    };
+                    xhr.send(formData);
+                };
+                </script>
+            </div>
+        </div>
+
+        <div id="awardMenu" style="display:none;">
+            <label for="awardFunctionSelect"><strong>請選擇功能：</strong></label>
+            <select id="awardFunctionSelect" onchange="showAwardSection()">
+                <option value="">-- 請選擇 --</option>
+                <option value="add">新增獎項</option>
+                <option value="delete">修改/刪除獎項</option>
+                <option value="search">查詢獎項</option>
+            </select>
+            <div id="addAwardSection" class="section">
+                <h2>新增獎項</h2>
+                <form action="award_add.php" method="post">
+                    <label>教師編號：<input type="text" name="Prof_ID" required></label>
+                    <label>學生姓名：<input type="text" name="Award_Advisee" required></label>
+                    <label>作品/計畫名稱：<input type="text" name="Award_ProjectName" required></label>
+                    <label>競賽名稱與名次：<input type="text" name="Award_CompName_Position" required></label>
+                    <label>得獎日期：<input type="date" name="Award_Date" required></label>
+                    <label>主辦單位：<input type="text" name="Award_organizer" required></label>
+                    <button type="submit">新增</button>
+                </form>
+            </div>
+            <div id="deleteAwardSection" class="section">
+                <h2>修改/刪除獎項</h2>
+                <table>
+                    <tr>
+                        <th>獎項ID</th>
+                        <th>教師編號</th>
+                        <th>學生姓名</th>
+                        <th>作品/計畫名稱</th>
+                        <th>競賽名稱與名次</th>
+                        <th>得獎日期</th>
+                        <th>主辦單位</th>
+                        <th>操作</th>
+                    </tr>
+                    <?php
+                    $resultAward = $mysqli->query("SELECT * FROM Award");
+                    while($row = $resultAward->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['Award_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['Prof_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['Award_Advisee']) ?></td>
+                        <td><?= htmlspecialchars($row['Award_ProjectName']) ?></td>
+                        <td><?= htmlspecialchars($row['Award_CompName_Position']) ?></td>
+                        <td><?= htmlspecialchars($row['Award_Date']) ?></td>
+                        <td><?= htmlspecialchars($row['Award_organizer']) ?></td>
+                        <td>
+                            <a href="award_edit.php?id=<?= urlencode($row['Award_ID']) ?>">修改</a>
+                            <a class="delete-link" href="award_delete.php?id=<?= urlencode($row['Award_ID']) ?>" onclick="return confirm('確定要刪除嗎？');">刪除</a>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </table>
+            </div>
+            <div id="searchAwardSection" class="section">
+                <h2>查詢獎項</h2>
+                <form id="searchAwardForm" method="post" action="award_search.php" onsubmit="return false;">
+                    <input type="text" name="search_keyword" placeholder="請輸入學生、作品、競賽或主辦單位關鍵字" required>
+                    <button type="submit">查詢</button>
+                </form>
+                <div id="searchAwardResult"></div>
+                <script>
+                document.getElementById('searchAwardForm').onsubmit = function() {
+                    var form = this;
+                    var formData = new FormData(form);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', form.action, true);
+                    xhr.onload = function() {
+                        document.getElementById('searchAwardResult').innerHTML = xhr.responseText;
+                    };
+                    xhr.send(formData);
+                };
+                </script>
+            </div>
+        </div>
+
+        <div id="projectMenu" style="display:none;">
+            <label for="projectFunctionSelect"><strong>請選擇功能：</strong></label>
+            <select id="projectFunctionSelect" onchange="showProjectSection()">
+                <option value="">-- 請選擇 --</option>
+                <option value="add">新增計畫</option>
+                <option value="delete">修改/刪除計畫</option>
+                <option value="search">查詢計畫</option>
+            </select>
+            <div id="addProjectSection" class="section">
+                <h2>新增計畫</h2>
+                <form action="project_add.php" method="post">
+                    <label>教師編號：<input type="text" name="Prof_ID" required></label>
+                    <label>計畫名稱：<input type="text" name="Project_Name" required></label>
+                    <label>計畫期間：<input type="text" name="Project_Duration" required></label>
+                    <label>計畫類型：
+                        <select name="Project_Type" required>
+                            <option value="">--請選擇--</option>
+                            <option value="國科會">國科會</option>
+                            <option value="產學合作">產學合作</option>
+                        </select>
+                    </label>
+                    <label>擔任職務：<input type="text" name="Project_TakenPosition" required></label>
+                    <button type="submit">新增</button>
+                </form>
+            </div>
+            <div id="deleteProjectSection" class="section">
+                <h2>修改/刪除計畫</h2>
+                <table>
+                    <tr>
+                        <th>計畫ID</th>
+                        <th>教師編號</th>
+                        <th>計畫名稱</th>
+                        <th>計畫期間</th>
+                        <th>計畫類型</th>
+                        <th>擔任職務</th>
+                        <th>操作</th>
+                    </tr>
+                    <?php
+                    $resultProject = $mysqli->query("SELECT * FROM Project");
+                    while($row = $resultProject->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['Project_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['Prof_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['Project_Name']) ?></td>
+                        <td><?= htmlspecialchars($row['Project_Duration']) ?></td>
+                        <td><?= htmlspecialchars($row['Project_Type']) ?></td>
+                        <td><?= htmlspecialchars($row['Project_TakenPosition']) ?></td>
+                        <td>
+                            <a href="project_edit.php?id=<?= urlencode($row['Project_ID']) ?>">修改</a>
+                            <a class="delete-link" href="project_delete.php?id=<?= urlencode($row['Project_ID']) ?>" onclick="return confirm('確定要刪除嗎？');">刪除</a>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </table>
+            </div>
+            <div id="searchProjectSection" class="section">
+                <h2>查詢計畫</h2>
+                <form id="searchProjectForm" method="post" action="project_search.php" onsubmit="return false;">
+                    <input type="text" name="search_keyword" placeholder="請輸入計畫名稱、期間、類型或職務關鍵字" required>
+                    <button type="submit">查詢</button>
+                </form>
+                <div id="searchProjectResult"></div>
+                <script>
+                document.getElementById('searchProjectForm').onsubmit = function() {
+                    var form = this;
+                    var formData = new FormData(form);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', form.action, true);
+                    xhr.onload = function() {
+                        document.getElementById('searchProjectResult').innerHTML = xhr.responseText;
+                    };
+                    xhr.send(formData);
+                };
+                </script>
+            </div>
+        </div>
+
+        <div id="speechMenu" style="display:none;">
+            <label for="speechFunctionSelect"><strong>請選擇功能：</strong></label>
+            <select id="speechFunctionSelect" onchange="showSpeechSection()">
+                <option value="">-- 請選擇 --</option>
+                <option value="add">新增演講</option>
+                <option value="delete">修改/刪除演講</option>
+                <option value="search">查詢演講</option>
+            </select>
+            <div id="addSpeechSection" class="section">
+                <h2>新增演講</h2>
+                <form action="speech_add.php" method="post">
+                    <label>教師編號：<input type="text" name="Prof_ID" required></label>
+                    <label>演講名稱：<input type="text" name="Speech_Name" required></label>
+                    <label>對象/場合：<input type="text" name="Speech_Audience" required></label>
+                    <label>日期：<input type="date" name="Speech_Date" required></label>
+                    <button type="submit">新增</button>
+                </form>
+            </div>
+            <div id="deleteSpeechSection" class="section">
+                <h2>修改/刪除演講</h2>
+                <table>
+                    <tr>
+                        <th>演講ID</th>
+                        <th>教師編號</th>
+                        <th>演講名稱</th>
+                        <th>對象/場合</th>
+                        <th>日期</th>
+                        <th>操作</th>
+                    </tr>
+                    <?php
+                    $resultSpeech = $mysqli->query("SELECT * FROM Speech");
+                    while($row = $resultSpeech->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['Speech_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['Prof_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['Speech_Name']) ?></td>
+                        <td><?= htmlspecialchars($row['Speech_Audience']) ?></td>
+                        <td><?= htmlspecialchars($row['Speech_Date']) ?></td>
+                        <td>
+                            <a href="speech_edit.php?id=<?= urlencode($row['Speech_ID']) ?>">修改</a>
+                            <a class="delete-link" href="speech_delete.php?id=<?= urlencode($row['Speech_ID']) ?>" onclick="return confirm('確定要刪除嗎？');">刪除</a>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </table>
+            </div>
+            <div id="searchSpeechSection" class="section">
+                <h2>查詢演講</h2>
+                <form id="searchSpeechForm" method="post" action="speech_search.php" onsubmit="return false;">
+                    <input type="text" name="search_keyword" placeholder="請輸入演講名稱或對象關鍵字" required>
+                    <button type="submit">查詢</button>
+                </form>
+                <div id="searchSpeechResult"></div>
+                <script>
+                document.getElementById('searchSpeechForm').onsubmit = function() {
+                    var form = this;
+                    var formData = new FormData(form);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', form.action, true);
+                    xhr.onload = function() {
+                        document.getElementById('searchSpeechResult').innerHTML = xhr.responseText;
+                    };
+                    xhr.send(formData);
+                };
+                </script>
+            </div>
+        </div>
+
+        <div id="teachmatMenu" style="display:none;">
+            <label for="teachmatFunctionSelect"><strong>請選擇功能：</strong></label>
+            <select id="teachmatFunctionSelect" onchange="showTeachMatSection()">
+                <option value="">-- 請選擇 --</option>
+                <option value="add">新增教材與作品</option>
+                <option value="delete">修改/刪除教材與作品</option>
+                <option value="search">查詢教材與作品</option>
+            </select>
+            <div id="addTeachMatSection" class="section">
+                <h2>新增教材與作品</h2>
+                <form action="teachmat_add.php" method="post">
+                    <label>教師編號：<input type="text" name="Prof_ID" required></label>
+                    <label>作者：<input type="text" name="TeachMat_Author" required></label>
+                    <label>教材/作品名稱：<input type="text" name="TeachMat_Name" required></label>
+                    <label>出版社/發表單位：<input type="text" name="TeachMat_Publisher" required></label>
+                    <button type="submit">新增</button>
+                </form>
+            </div>
+            <div id="deleteTeachMatSection" class="section">
+                <h2>修改/刪除教材與作品</h2>
+                <table>
+                    <tr>
+                        <th>教材ID</th>
+                        <th>教師編號</th>
+                        <th>作者</th>
+                        <th>教材/作品名稱</th>
+                        <th>出版社/發表單位</th>
+                        <th>操作</th>
+                    </tr>
+                    <?php
+                    $resultTeachMat = $mysqli->query("SELECT * FROM TeachingMaterials");
+                    while($row = $resultTeachMat->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['TeachMat_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['Prof_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['TeachMat_Author']) ?></td>
+                        <td><?= htmlspecialchars($row['TeachMat_Name']) ?></td>
+                        <td><?= htmlspecialchars($row['TeachMat_Publisher']) ?></td>
+                        <td>
+                            <a href="teachmat_edit.php?id=<?= urlencode($row['TeachMat_ID']) ?>">修改</a>
+                            <a class="delete-link" href="teachmat_delete.php?id=<?= urlencode($row['TeachMat_ID']) ?>" onclick="return confirm('確定要刪除嗎？');">刪除</a>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </table>
+            </div>
+            <div id="searchTeachMatSection" class="section">
+                <h2>查詢教材與作品</h2>
+                <form id="searchTeachMatForm" method="post" action="teachmat_search.php" onsubmit="return false;">
+                    <input type="text" name="search_keyword" placeholder="請輸入作者、名稱或出版社關鍵字" required>
+                    <button type="submit">查詢</button>
+                </form>
+                <div id="searchTeachMatResult"></div>
+                <script>
+                document.getElementById('searchTeachMatForm').onsubmit = function() {
+                    var form = this;
+                    var formData = new FormData(form);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', form.action, true);
+                    xhr.onload = function() {
+                        document.getElementById('searchTeachMatResult').innerHTML = xhr.responseText;
+                    };
+                    xhr.send(formData);
+                };
+                </script>
+            </div>
+        </div>
+
+        <div id="patentMenu" style="display:none;">
+            <label for="patentFunctionSelect"><strong>請選擇功能：</strong></label>
+            <select id="patentFunctionSelect" onchange="showPatentSection()">
+                <option value="">-- 請選擇 --</option>
+                <option value="add">新增專利</option>
+                <option value="delete">修改/刪除專利</option>
+                <option value="search">查詢專利</option>
+            </select>
+            <div id="addPatentSection" class="section">
+                <h2>新增專利</h2>
+                <form action="patent_add.php" method="post">
+                    <label>教師編號：<input type="text" name="Prof_ID" required></label>
+                    <label>專利類型：<input type="text" name="Patent_Type" required></label>
+                    <label>專利名稱/內容：<input type="text" name="Patent_Term" required></label>
+                    <button type="submit">新增</button>
+                </form>
+            </div>
+            <div id="deletePatentSection" class="section">
+                <h2>修改/刪除專利</h2>
+                <table>
+                    <tr>
+                        <th>專利ID</th>
+                        <th>教師編號</th>
+                        <th>專利類型</th>
+                        <th>專利名稱/內容</th>
+                        <th>操作</th>
+                    </tr>
+                    <?php
+                    $resultPatent = $mysqli->query("SELECT * FROM Patent");
+                    while($row = $resultPatent->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['Patent_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['Prof_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['Patent_Type']) ?></td>
+                        <td><?= htmlspecialchars($row['Patent_Term']) ?></td>
+                        <td>
+                            <a href="patent_edit.php?id=<?= urlencode($row['Patent_ID']) ?>">修改</a>
+                            <a class="delete-link" href="patent_delete.php?id=<?= urlencode($row['Patent_ID']) ?>" onclick="return confirm('確定要刪除嗎？');">刪除</a>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </table>
+            </div>
+            <div id="searchPatentSection" class="section">
+                <h2>查詢專利</h2>
+                <form id="searchPatentForm" method="post" action="patent_search.php" onsubmit="return false;">
+                    <input type="text" name="search_keyword" placeholder="請輸入專利類型或名稱關鍵字" required>
+                    <button type="submit">查詢</button>
+                </form>
+                <div id="searchPatentResult"></div>
+                <script>
+                document.getElementById('searchPatentForm').onsubmit = function() {
+                    var form = this;
+                    var formData = new FormData(form);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', form.action, true);
+                    xhr.onload = function() {
+                        document.getElementById('searchPatentResult').innerHTML = xhr.responseText;
+                    };
+                    xhr.send(formData);
+                };
+                </script>
+            </div>
+        </div>
         <script>
         document.getElementById('navTeacher').onclick = function(e) {
             e.preventDefault();
             document.getElementById('teacherMenu').style.display = 'block';
             document.getElementById('userMenu').style.display = 'none';
+            document.getElementById('eduMenu').style.display = 'none';
+            document.getElementById('expMenu').style.display = 'none';
+            document.getElementById('awardMenu').style.display = 'none';
+            document.getElementById('projectMenu').style.display = 'none';
+            document.getElementById('speechMenu').style.display = 'none';
+            document.getElementById('teachmatMenu').style.display = 'none';
+            document.getElementById('patentMenu').style.display = 'none';
+        };
+        document.getElementById('navEdu').onclick = function(e) {
+            e.preventDefault();
+            document.getElementById('teacherMenu').style.display = 'none';
+            document.getElementById('userMenu').style.display = 'none';
+            document.getElementById('eduMenu').style.display = 'block';
+            document.getElementById('expMenu').style.display = 'none';
+            document.getElementById('awardMenu').style.display = 'none';
+            document.getElementById('projectMenu').style.display = 'none';
+            document.getElementById('speechMenu').style.display = 'none';
+            document.getElementById('teachmatMenu').style.display = 'none';
+            document.getElementById('patentMenu').style.display = 'none';
+        };
+        document.getElementById('navExp').onclick = function(e) {
+            e.preventDefault();
+            document.getElementById('teacherMenu').style.display = 'none';
+            document.getElementById('userMenu').style.display = 'none';
+            document.getElementById('eduMenu').style.display = 'none';
+            document.getElementById('expMenu').style.display = 'block';
+            document.getElementById('awardMenu').style.display = 'none';
+            document.getElementById('projectMenu').style.display = 'none';
+            document.getElementById('speechMenu').style.display = 'none';
+            document.getElementById('teachmatMenu').style.display = 'none';
+            document.getElementById('patentMenu').style.display = 'none';
+        };
+        document.getElementById('navAward').onclick = function(e) {
+            e.preventDefault();
+            document.getElementById('teacherMenu').style.display = 'none';
+            document.getElementById('userMenu').style.display = 'none';
+            document.getElementById('eduMenu').style.display = 'none';
+            document.getElementById('expMenu').style.display = 'none';
+            document.getElementById('awardMenu').style.display = 'block';
+            document.getElementById('projectMenu').style.display = 'none';
+            document.getElementById('speechMenu').style.display = 'none';
+            document.getElementById('teachmatMenu').style.display = 'none';
+            document.getElementById('patentMenu').style.display = 'none';
+        };
+        document.getElementById('navProject').onclick = function(e) {
+            e.preventDefault();
+            document.getElementById('teacherMenu').style.display = 'none';
+            document.getElementById('userMenu').style.display = 'none';
+            document.getElementById('eduMenu').style.display = 'none';
+            document.getElementById('expMenu').style.display = 'none';
+            document.getElementById('awardMenu').style.display = 'none';
+            document.getElementById('projectMenu').style.display = 'block';
+            document.getElementById('speechMenu').style.display = 'none';
+            document.getElementById('teachmatMenu').style.display = 'none';
+            document.getElementById('patentMenu').style.display = 'none';
+        };
+        document.getElementById('navSpeech').onclick = function(e) {
+            e.preventDefault();
+            document.getElementById('teacherMenu').style.display = 'none';
+            document.getElementById('userMenu').style.display = 'none';
+            document.getElementById('eduMenu').style.display = 'none';
+            document.getElementById('expMenu').style.display = 'none';
+            document.getElementById('awardMenu').style.display = 'none';
+            document.getElementById('projectMenu').style.display = 'none';
+            document.getElementById('speechMenu').style.display = 'block';
+            document.getElementById('teachmatMenu').style.display = 'none';
+            document.getElementById('patentMenu').style.display = 'none';
+        };
+        document.getElementById('navTeachMat').onclick = function(e) {
+            e.preventDefault();
+            document.getElementById('teacherMenu').style.display = 'none';
+            document.getElementById('userMenu').style.display = 'none';
+            document.getElementById('eduMenu').style.display = 'none';
+            document.getElementById('expMenu').style.display = 'none';
+            document.getElementById('awardMenu').style.display = 'none';
+            document.getElementById('projectMenu').style.display = 'none';
+            document.getElementById('speechMenu').style.display = 'none';
+            document.getElementById('teachmatMenu').style.display = 'block';
+            document.getElementById('patentMenu').style.display = 'none';
+        };
+        document.getElementById('navPatent').onclick = function(e) {
+            e.preventDefault();
+            document.getElementById('teacherMenu').style.display = 'none';
+            document.getElementById('userMenu').style.display = 'none';
+            document.getElementById('eduMenu').style.display = 'none';
+            document.getElementById('expMenu').style.display = 'none';
+            document.getElementById('awardMenu').style.display = 'none';
+            document.getElementById('projectMenu').style.display = 'none';
+            document.getElementById('speechMenu').style.display = 'none';
+            document.getElementById('teachmatMenu').style.display = 'none';
+            document.getElementById('patentMenu').style.display = 'block';
         };
         document.getElementById('navSchedule').onclick = function(e) {
             e.preventDefault();
             document.getElementById('teacherMenu').style.display = 'none';
-            // 這裡可加上顯示課表維護內容
+            document.getElementById('userMenu').style.display = 'none';
+            document.getElementById('eduMenu').style.display = 'none';
+            document.getElementById('expMenu').style.display = 'none';
+            document.getElementById('awardMenu').style.display = 'none';
+            document.getElementById('projectMenu').style.display = 'none';
             alert('尚未實作課表維護功能');
         };
         document.getElementById('navLogin').onclick = function(e) {
             e.preventDefault();
             document.getElementById('teacherMenu').style.display = 'none';
             document.getElementById('userMenu').style.display = 'block';
+            document.getElementById('eduMenu').style.display = 'none';
+            document.getElementById('expMenu').style.display = 'none';
+            document.getElementById('awardMenu').style.display = 'none';
+            document.getElementById('projectMenu').style.display = 'none';
+            document.getElementById('speechMenu').style.display = 'none';
+            document.getElementById('teachmatMenu').style.display = 'none';
+            document.getElementById('patentMenu').style.display = 'none';
         };
         </script>
     </div>

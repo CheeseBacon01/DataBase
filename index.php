@@ -125,7 +125,11 @@ $result = $mysqli->query("SELECT * FROM teachers");
     <div class="container">
         <?php while($row = $result->fetch_assoc()): ?>
         <div class="card">
-            <div class="card-title"><?= htmlspecialchars($row['Prof_Name']) ?></div>
+            <div class="card-title">
+                <a href="professor.php?id=<?= urlencode($row['Prof_ID']) ?>">
+                    <?= htmlspecialchars($row['Prof_Name']) ?>
+                </a>
+            </div>
             <div class="card-info">
                 <span class="card-label">職稱：</span><?= htmlspecialchars($row['Prof_title']) ?>
             </div>
