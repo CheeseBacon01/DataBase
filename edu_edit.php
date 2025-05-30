@@ -51,24 +51,50 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
 <head>
     <meta charset="UTF-8">
     <title>修改學歷資料</title>
+    <style>
+        body { font-family: "Microsoft JhengHei", Arial, sans-serif; background: #f8f9fa; }
+        .edit-form {
+            background: #fff; padding: 20px; margin: 40px auto; width: 350px;
+            border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        label { display: block; margin-bottom: 10px; }
+        input[type="text"], input[type="email"], input[type="date"] {
+            width: 95%; padding: 6px 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;
+        }
+        select { width: 100%; padding: 6px 8px; border-radius: 4px; border: 1px solid #ccc; margin-top: 4px; }
+        button {
+            margin-top: 10px; padding: 8px 20px; background: #007bff; color: #fff;
+            border: none; border-radius: 4px; cursor: pointer; font-size: 1em;
+        }
+        button:hover { background: #0056b3; }
+        .msg-success { color: #28a745; margin-bottom: 12px; }
+        .msg-error { color: #dc3545; margin-bottom: 12px; }
+        .back-link { margin-left: 10px; }
+    </style>
+    <script>
+    function showResultAndRedirect(msg, isSuccess, redirectUrl) {
+        alert(msg);
+        if (isSuccess && redirectUrl) {
+            window.location.href = redirectUrl;
+        }
+    }
+    </script>
 </head>
 <body>
-    <form action="edu_edit.php" method="post">
+    <form class="edit-form" action="edu_edit.php" method="post" onsubmit="return true;">
         <h2>修改學歷資料</h2>
         <?php if ($success): ?>
-            <div style="color:green;"><?= $success ?></div>
-            <a href="dashboard.php?tab=edu">回首頁</a>
+            <script>showResultAndRedirect('修改成功！', true, 'dashboard.php?tab=edu');</script>
         <?php elseif ($error): ?>
-            <div style="color:red;"><?= $error ?></div>
-            <a href="dashboard.php?tab=edu">回首頁</a>
+            <script>showResultAndRedirect('<?= $error ?>', false);</script>
         <?php elseif (isset($row)): ?>
             <input type="hidden" name="EduBG_ID" value="<?= htmlspecialchars($row['EduBG_ID']) ?>">
-            <label>教師編號：<input type="text" name="Prof_ID" value="<?= htmlspecialchars($row['Prof_ID']) ?>" required></label><br>
-            <label>學校：<input type="text" name="EduBG_University" value="<?= htmlspecialchars($row['EduBG_University']) ?>" required></label><br>
-            <label>系所：<input type="text" name="EduBG_Department" value="<?= htmlspecialchars($row['EduBG_Department']) ?>" required></label><br>
-            <label>學位：<input type="text" name="EduBG_Degree" value="<?= htmlspecialchars($row['EduBG_Degree']) ?>" required></label><br>
+            <label>教師編號：<input type="text" name="Prof_ID" value="<?= htmlspecialchars($row['Prof_ID']) ?>" required></label>
+            <label>學校：<input type="text" name="EduBG_University" value="<?= htmlspecialchars($row['EduBG_University']) ?>" required></label>
+            <label>系所：<input type="text" name="EduBG_Department" value="<?= htmlspecialchars($row['EduBG_Department']) ?>" required></label>
+            <label>學位：<input type="text" name="EduBG_Degree" value="<?= htmlspecialchars($row['EduBG_Degree']) ?>" required></label>
             <button type="submit">儲存修改</button>
-            <a href="dashboard.php?tab=edu">取消</a>
+            <a href="dashboard.php?tab=edu" class="back-link">取消</a>
         <?php endif; ?>
     </form>
 </body>

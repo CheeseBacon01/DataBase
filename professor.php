@@ -85,8 +85,9 @@ $stmt8->close();
     <style>
         body {
             font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
-            background: #f3f4f6;
+            background:rgb(255, 255, 255);
             color: #222;
+            text-align: left;
         }
         .navbar {
             background: #fffbe8;
@@ -127,17 +128,16 @@ $stmt8->close();
         .navbar-menu a:hover {
             color: #007bff;
         }
-        h1 {
-            text-align: center;
-            margin-top: 40px;
+        h1, h2, h3 {
             color: #222;
-            letter-spacing: 2px;
             text-shadow: none;
+            letter-spacing: 2px;
+            text-align: left;
         }
         .container {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             gap: 24px;
             margin: 40px auto;
             max-width: 900px;
@@ -148,8 +148,10 @@ $stmt8->close();
             padding: 40px 32px 32px 32px;
         }
         .info, .label {
-            color: #444;
+            color: #222;
             margin-bottom: 4px;
+            font-size: 1.08em;
+            text-align: left;
         }
         .card-list {
             display: flex;
@@ -166,23 +168,26 @@ $stmt8->close();
             border: 1.5px solid #e0e0e0;
             color: #222;
             transition: box-shadow 0.2s, transform 0.2s;
+            font-size: 1.08em;
+            text-align: left;
         }
         .card:hover {
             box-shadow: 0 8px 24px #d0d0d0;
             transform: translateY(-2px) scale(1.025);
         }
         .card-title {
-            font-size: 1.18em;
-            font-weight: bold;
+            font-size: 0.98em;
             margin-bottom: 8px;
-            color: #007bff;
+            color:rgb(0, 0, 0);
             letter-spacing: 1px;
             text-shadow: none;
+            text-align: left;
         }
         .card-label {
-            color: #888;
+            color:rgb(0, 0, 0);
             font-size: 0.98em;
             margin-right: 6px;
+            text-align: left;
         }
         a {
             color: #007bff;
@@ -213,20 +218,21 @@ $stmt8->close();
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="navbar-title">逢甲資訊系統</div>
-        <div class="navbar-menu">
-            <a href="index.php">教授資訊</a>
-            <a href="#">課表</a>
-            <a href="dashboard.php">控制台</a>
-        </div>
-    </div>
     <div class="container">
         <a href="index.php">← 回教授列表</a>
-        <h1><?= htmlspecialchars($prof['Prof_Name']) ?></h1>
-        <div class="info"><span class="label">職稱：</span><?= htmlspecialchars($prof['Prof_title']) ?></div>
-        <div class="info"><span class="label">電子郵件：</span><?= htmlspecialchars($prof['Prof_EmailAddress']) ?></div>
-        <div class="info"><span class="label">電話分機：</span><?= htmlspecialchars($prof['Prof_ExtensionNumber']) ?></div>
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 24px;">
+            <div style="flex:1; min-width:0;">
+                <h1><?= htmlspecialchars($prof['Prof_Name']) ?></h1>
+                <div class="info"><span class="label">職稱：</span><?= htmlspecialchars($prof['Prof_title']) ?></div>
+                <div class="info"><span class="label">電子郵件：</span><?= htmlspecialchars($prof['Prof_EmailAddress']) ?></div>
+                <div class="info"><span class="label">電話分機：</span><?= htmlspecialchars($prof['Prof_ExtensionNumber']) ?></div>
+            </div>
+            <?php if (!empty($prof['Prof_Image'])): ?>
+            <div style="flex-shrink:0; text-align:right;">
+                <img src="<?= htmlspecialchars($prof['Prof_Image']) ?>" alt="大頭照" style="max-width:160px;max-height:160px;border-radius:12px;box-shadow:0 2px 12px #ccc;">
+            </div>
+            <?php endif; ?>
+        </div>
         <h2>學歷</h2>
         <?php if (count($edus) > 0): ?>
         <div class="card-list">

@@ -12,7 +12,15 @@ $id = $_GET['id'] ?? '';
 $success = '';
 $error = '';
 
+// 刪除教師時一併刪除圖片
 if ($id) {
+    $stmt_img = $mysqli->prepare("SELECT Prof_Image FROM teachers WHERE Prof_ID = ?");
+    $stmt_img->bind_param("s", $id);
+    $stmt_img->execute();
+    $stmt_img->bind_result($oldImg);
+    $stmt_img->fetch();
+    $stmt_img->close();
+    if ($oldImg && file_exists($oldImg)) unlink($oldImg);
     $stmt = $mysqli->prepare("DELETE FROM teachers WHERE Prof_ID = ?");
     $stmt->bind_param("s", $id);
     if ($stmt->execute()) {

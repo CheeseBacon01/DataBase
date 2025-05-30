@@ -17,13 +17,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Prof_title = $_POST['Prof_title'] ?? '';
     $Prof_EmailAddress = $_POST['Prof_EmailAddress'] ?? '';
     $Prof_ExtensionNumber = $_POST['Prof_ExtensionNumber'] ?? '';
-
+    $Prof_Image = null;
+    if (isset($_FILES['Prof_Image']) && $_FILES['Prof_Image']['error'] === UPLOAD_ERR_OK) {
+        $imgTmp = $_FILES['Prof_Image']['tmp_name'];
+        $imgName = basename($_FILES['Prof_Image']['name']);
+        $imgExt = strtolower(pathinfo($imgName, PATHINFO_EXTENSION));
+        $allowExt = ['jpg','jpeg','png','gif','webp'];
+        if (in_array($imgExt, $allowExt)) {
+            $saveName = 'uploads/prof_' . $Prof_ID . '_' . time() . '.' . $imgExt;
+            if (!is_dir('uploads')) mkdir('uploads');
+            move_uploaded_file($imgTmp, $saveName);
+            $Prof_Image = $saveName;
+        }
+    }
+    // 處理刪除圖片
+    if (isset($_POST['delete_image']) && $_POST['delete_image'] == '1') {
+        $stmt_img = $mysqli->prepare("SELECT Prof_Image FROM teachers WHERE Prof_ID = ?");
+        $stmt_img->bind_param("s", $Prof_ID);
+        $stmt_img->execute();
+        $stmt_img->bind_result($oldImg);
+        $stmt_img->fetch();
+        $stmt_img->close();
+        if ($oldImg && file_exists($oldImg)) unlink($oldImg);
+        $Prof_Image = '';
+    }
+    // 欄位檢查
     if (empty($Prof_ID) || empty($Prof_Name) || empty($Prof_title) || empty($Prof_EmailAddress) || empty($Prof_ExtensionNumber)) {
         $error = "所有欄位都是必填的！";
     } else {
-        $stmt = $mysqli->prepare("UPDATE teachers SET Prof_Name=?, Prof_title=?, Prof_EmailAddress=?, Prof_ExtensionNumber=? WHERE Prof_ID=?");
-        $stmt->bind_param("sssss", $Prof_Name, $Prof_title, $Prof_EmailAddress, $Prof_ExtensionNumber, $Prof_ID);
-
+        // 取得舊圖片
+        $stmt_img = $mysqli->prepare("SELECT Prof_Image FROM teachers WHERE Prof_ID = ?");
+        $stmt_img->bind_param("s", $Prof_ID);
+        $stmt_img->execute();
+        $stmt_img->bind_result($oldImg);
+        $stmt_img->fetch();
+        $stmt_img->close();
+        // 若有新圖片上傳則更新，否則維持舊圖
+        if ($Prof_Image === null) $Prof_Image = $oldImg;
+        $stmt = $mysqli->prepare("UPDATE teachers SET Prof_Name=?, Prof_title=?, Prof_EmailAddress=?, Prof_ExtensionNumber=?, Prof_Image=? WHERE Prof_ID=?");
+        $stmt->bind_param("ssssss", $Prof_Name, $Prof_title, $Prof_EmailAddress, $Prof_ExtensionNumber, $Prof_Image, $Prof_ID);
         if ($stmt->execute()) {
             $success = "修改成功！";
         } else {
@@ -74,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     </style>
 </head>
 <body>
-    <form class="edit-form" action="info_edit.php" method="post">
+    <form class="edit-form" action="info_edit.php" method="post" enctype="multipart/form-data">
         <h2>修改教師資料</h2>
         <?php if ($success): ?>
             <div class="msg-success"><?= $success ?></div>
@@ -95,6 +127,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
             </label>
             <label>電話分機：
                 <input type="text" name="Prof_ExtensionNumber" value="<?= htmlspecialchars($row['Prof_ExtensionNumber']) ?>" required>
+            </label>
+            <label>大頭照：
+                <?php if (!empty($row['Prof_Image'])): ?>
+                    <img src="<?= htmlspecialchars($row['Prof_Image']) ?>" alt="大頭照" style="max-width:100px;display:block;margin-bottom:6px;">
+                    <input type="checkbox" name="delete_image" value="1"> 刪除現有圖片<br>
+                <?php endif; ?>
+                <input type="file" name="Prof_Image" accept="image/*">
             </label>
             <button type="submit">儲存修改</button>
             <a href="dashboard.php" class="back-link">取消</a>

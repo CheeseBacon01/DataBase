@@ -400,6 +400,14 @@ include('db.php');
             document.getElementById('speechMenu').style.display = 'none';
             document.getElementById('teachmatMenu').style.display = 'none';
             document.getElementById('patentMenu').style.display = 'none';
+            // 預設顯示 teacherMenu，並將 navTeacher 設為 active
+            document.getElementById('teacherMenu').style.display = 'block';
+            var navTeacher = document.getElementById('navTeacher');
+            if (navTeacher) navTeacher.classList.add('active');
+            // section 全部隱藏，下拉選單重設
+            hideAllSections('teacherMenu');
+            var select = document.getElementById('functionSelect');
+            if (select) select.value = '';
         };
         // 維護選單按鈕點擊時只顯示下拉選單
         document.addEventListener('DOMContentLoaded', function() {
@@ -477,7 +485,7 @@ include('db.php');
             </select>
             <div id="addSection" class="section" style="display:none;">
                 <h2>新增教師</h2>
-                <form action="info_add.php" method="post">
+                <form action="info_add.php" method="post" enctype="multipart/form-data">
                     <label>教師編號：
                         <input type="text" name="Prof_ID" required>
                     </label>
@@ -492,6 +500,9 @@ include('db.php');
                     </label>
                     <label>電話分機：
                         <input type="text" name="Prof_ExtensionNumber" required>
+                    </label>
+                    <label>大頭照：
+                        <input type="file" name="Prof_Image" accept="image/*">
                     </label>
                     <button type="submit">新增</button>
                 </form>

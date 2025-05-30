@@ -151,20 +151,25 @@ $result = $mysqli->query("SELECT * FROM teachers");
     <h1>教師資料一覽</h1>
     <div class="container">
         <?php while($row = $result->fetch_assoc()): ?>
-        <div class="card">
-            <div class="card-title">
-                <a href="professor.php?id=<?= urlencode($row['Prof_ID']) ?>">
-                    <?= htmlspecialchars($row['Prof_Name']) ?>
-                </a>
-            </div>
-            <div class="card-info">
-                <span class="card-label">職稱：</span><?= htmlspecialchars($row['Prof_title']) ?>
-            </div>
-            <div class="card-info">
-                <span class="card-label">電子郵件：</span><?= htmlspecialchars($row['Prof_EmailAddress']) ?>
-            </div>
-            <div class="card-info">
-                <span class="card-label">電話分機：</span><?= htmlspecialchars($row['Prof_ExtensionNumber']) ?>
+        <div class="card" style="flex-direction:row; align-items:center; min-height:160px; width:420px;">
+            <?php if (!empty($row['Prof_Image'])): ?>
+                <img src="<?= htmlspecialchars($row['Prof_Image']) ?>" alt="大頭照" style="width:110px;height:110px;object-fit:cover;border-radius:12px;box-shadow:0 2px 12px #ccc;margin-right:24px;flex-shrink:0;">
+            <?php endif; ?>
+            <div style="flex:1; min-width:0;">
+                <div class="card-title">
+                    <a href="professor.php?id=<?= urlencode($row['Prof_ID']) ?>">
+                        <?= htmlspecialchars($row['Prof_Name']) ?>
+                    </a>
+                </div>
+                <div class="card-info">
+                    <span class="card-label">職稱：</span><?= htmlspecialchars($row['Prof_title']) ?>
+                </div>
+                <div class="card-info">
+                    <span class="card-label">電子郵件：</span><?= htmlspecialchars($row['Prof_EmailAddress']) ?>
+                </div>
+                <div class="card-info">
+                    <span class="card-label">電話分機：</span><?= htmlspecialchars($row['Prof_ExtensionNumber']) ?>
+                </div>
             </div>
         </div>
         <?php endwhile; ?>
