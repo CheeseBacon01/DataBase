@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Prof_title = $_POST['Prof_title'] ?? '';
     $Prof_EmailAddress = $_POST['Prof_EmailAddress'] ?? '';
     $Prof_ExtensionNumber = $_POST['Prof_ExtensionNumber'] ?? '';
+    $Prof_ResearchFields = $_POST['Prof_ResearchFields'] ?? '';
     $Prof_Image = null;
     if (isset($_FILES['Prof_Image']) && $_FILES['Prof_Image']['error'] === UPLOAD_ERR_OK) {
         $imgTmp = $_FILES['Prof_Image']['tmp_name'];
@@ -54,8 +55,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_img->close();
         // 若有新圖片上傳則更新，否則維持舊圖
         if ($Prof_Image === null) $Prof_Image = $oldImg;
-        $stmt = $mysqli->prepare("UPDATE teachers SET Prof_Name=?, Prof_title=?, Prof_EmailAddress=?, Prof_ExtensionNumber=?, Prof_Image=? WHERE Prof_ID=?");
-        $stmt->bind_param("ssssss", $Prof_Name, $Prof_title, $Prof_EmailAddress, $Prof_ExtensionNumber, $Prof_Image, $Prof_ID);
+        $stmt = $mysqli->prepare("UPDATE teachers SET Prof_Name=?, Prof_title=?, Prof_EmailAddress=?, Prof_ExtensionNumber=?, Prof_ResearchFields=?, Prof_Image=? WHERE Prof_ID=?");
+        $stmt->bind_param("sssssss", $Prof_Name, $Prof_title, $Prof_EmailAddress, $Prof_ExtensionNumber, $Prof_ResearchFields, $Prof_Image, $Prof_ID);
         if ($stmt->execute()) {
             $success = "修改成功！";
         } else {
@@ -127,6 +128,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
             </label>
             <label>電話分機：
                 <input type="text" name="Prof_ExtensionNumber" value="<?= htmlspecialchars($row['Prof_ExtensionNumber']) ?>" required>
+            </label>
+            <label>研究領域：
+                <input type="text" name="Prof_ResearchFields" value="<?= htmlspecialchars($row['Prof_ResearchFields']) ?>" placeholder="可輸入多個，以逗號分隔">
             </label>
             <label>大頭照：
                 <?php if (!empty($row['Prof_Image'])): ?>

@@ -71,7 +71,7 @@ include('db.php');
         label[for^="functionSelect"] {
             color: #222;
         }
-        select, input[type="text"], input[type="email"], input[type="date"] {
+        select, input[type="text"], input[type="email"], input[type="date"], input[type="password"] {
             background: #f5f6fa;
             color: #222;
             border: 1.5px solid #e0e0e0;
@@ -92,6 +92,7 @@ include('db.php');
         form input[type="text"],
         form input[type="email"],
         form input[type="date"],
+        form input[type="password"],
         form select {
             width: 98%;
             max-width: 480px;
@@ -192,7 +193,8 @@ include('db.php');
         select#projectFunctionSelect,
         select#speechFunctionSelect,
         select#teachmatFunctionSelect,
-        select#patentFunctionSelect {
+        select#patentFunctionSelect,
+        select#paperFunctionSelect {
             min-width: 200px;
             min-height: 38px;
             font-size: 1.08em;
@@ -212,7 +214,8 @@ include('db.php');
         select#projectFunctionSelect:focus,
         select#speechFunctionSelect:focus,
         select#teachmatFunctionSelect:focus,
-        select#patentFunctionSelect:focus {
+        select#patentFunctionSelect:focus,
+        select#paperFunctionSelect:focus {
             background: #fffbe8;
             color: #222;
             outline: 2px solid #888;
@@ -225,7 +228,8 @@ include('db.php');
         select#projectFunctionSelect option:checked,
         select#speechFunctionSelect option:checked,
         select#teachmatFunctionSelect option:checked,
-        select#patentFunctionSelect option:checked {
+        select#patentFunctionSelect option:checked,
+        select#paperFunctionSelect option:checked {
             background: #ffe066;
             color: #222;
         }
@@ -281,6 +285,27 @@ include('db.php');
         }
         th {
             font-weight: bold;
+        }
+        select#courseFunctionSelect {
+            min-width: 200px;
+            min-height: 38px;
+            font-size: 1.08em;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            background: #fffbe8;
+            color: #222;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px #eee;
+        }
+        select#courseFunctionSelect:focus {
+            background: #fffbe8;
+            color: #222;
+            outline: 2px solid #888;
+        }
+        select#courseFunctionSelect option:checked {
+            background: #ffe066;
+            color: #222;
         }
     </style>
     <script>
@@ -389,6 +414,17 @@ include('db.php');
                 document.getElementById('searchPatentSection').style.display = 'block';
             }
         }
+        function showPaperSection() {
+            var select = document.getElementById('paperFunctionSelect');
+            hideAllSections('paperMenu');
+            if (select.value === 'add') {
+                document.getElementById('addPaperSection').style.display = 'block';
+            } else if (select.value === 'delete') {
+                document.getElementById('deletePaperSection').style.display = 'block';
+            } else if (select.value === 'search') {
+                document.getElementById('searchPaperSection').style.display = 'block';
+            }
+        }
         window.onload = function() {
             // 預設全部功能選單都隱藏
             document.getElementById('teacherMenu').style.display = 'none';
@@ -400,6 +436,8 @@ include('db.php');
             document.getElementById('speechMenu').style.display = 'none';
             document.getElementById('teachmatMenu').style.display = 'none';
             document.getElementById('patentMenu').style.display = 'none';
+            document.getElementById('paperMenu').style.display = 'none';
+            document.getElementById('courseMenu').style.display = 'none';
             // 預設顯示 teacherMenu，並將 navTeacher 設為 active
             document.getElementById('teacherMenu').style.display = 'block';
             var navTeacher = document.getElementById('navTeacher');
@@ -418,9 +456,11 @@ include('db.php');
                 navExp: 'expMenu',
                 navAward: 'awardMenu',
                 navProject: 'projectMenu',
+                navPaper: 'paperMenu',
                 navSpeech: 'speechMenu',
                 navTeachMat: 'teachmatMenu',
-                navPatent: 'patentMenu'
+                navPatent: 'patentMenu',
+                navCourse: 'courseMenu'
             };
             Object.keys(menuMap).forEach(function(navId) {
                 var navBtn = document.getElementById(navId);
@@ -454,6 +494,159 @@ include('db.php');
                 }
             });
         });
+        function showCourseSection() {
+            var v = document.getElementById('courseFunctionSelect').value;
+            document.getElementById('addCourseSection').style.display = (v==='add') ? 'block' : 'none';
+            document.getElementById('editCourseSection').style.display = (v==='edit') ? 'block' : 'none';
+            document.getElementById('deleteCourseSection').style.display = (v==='delete') ? 'block' : 'none';
+        }
+        // 查詢功能AJAX
+        document.addEventListener('DOMContentLoaded', function() {
+            // 教師查詢
+            var searchForm = document.getElementById('searchForm');
+            if (searchForm) {
+                searchForm.onsubmit = function(e) {
+                    e.preventDefault();
+                    var formData = new FormData(searchForm);
+                    fetch('info_search.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(r => r.text())
+                    .then(txt => {
+                        document.getElementById('searchResult').innerHTML = txt;
+                    });
+                };
+            }
+            // 學歷查詢
+            var searchEduForm = document.getElementById('searchEduForm');
+            if (searchEduForm) {
+                searchEduForm.onsubmit = function(e) {
+                    e.preventDefault();
+                    var formData = new FormData(searchEduForm);
+                    fetch('edu_search.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(r => r.text())
+                    .then(txt => {
+                        document.getElementById('searchEduResult').innerHTML = txt;
+                    });
+                };
+            }
+            // 經歷查詢
+            var searchExpForm = document.getElementById('searchExpForm');
+            if (searchExpForm) {
+                searchExpForm.onsubmit = function(e) {
+                    e.preventDefault();
+                    var formData = new FormData(searchExpForm);
+                    fetch('exp_search.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(r => r.text())
+                    .then(txt => {
+                        document.getElementById('searchExpResult').innerHTML = txt;
+                    });
+                };
+            }
+            // 獎項查詢
+            var searchAwardForm = document.getElementById('searchAwardForm');
+            if (searchAwardForm) {
+                searchAwardForm.onsubmit = function(e) {
+                    e.preventDefault();
+                    var formData = new FormData(searchAwardForm);
+                    fetch('award_search.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(r => r.text())
+                    .then(txt => {
+                        document.getElementById('searchAwardResult').innerHTML = txt;
+                    });
+                };
+            }
+            // 計畫查詢
+            var searchProjectForm = document.getElementById('searchProjectForm');
+            if (searchProjectForm) {
+                searchProjectForm.onsubmit = function(e) {
+                    e.preventDefault();
+                    var formData = new FormData(searchProjectForm);
+                    fetch('project_search.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(r => r.text())
+                    .then(txt => {
+                        document.getElementById('searchProjectResult').innerHTML = txt;
+                    });
+                };
+            }
+            // 演講查詢
+            var searchSpeechForm = document.getElementById('searchSpeechForm');
+            if (searchSpeechForm) {
+                searchSpeechForm.onsubmit = function(e) {
+                    e.preventDefault();
+                    var formData = new FormData(searchSpeechForm);
+                    fetch('speech_search.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(r => r.text())
+                    .then(txt => {
+                        document.getElementById('searchSpeechResult').innerHTML = txt;
+                    });
+                };
+            }
+            // 教材查詢
+            var searchTeachMatForm = document.getElementById('searchTeachMatForm');
+            if (searchTeachMatForm) {
+                searchTeachMatForm.onsubmit = function(e) {
+                    e.preventDefault();
+                    var formData = new FormData(searchTeachMatForm);
+                    fetch('teachmat_search.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(r => r.text())
+                    .then(txt => {
+                        document.getElementById('searchTeachMatResult').innerHTML = txt;
+                    });
+                };
+            }
+            // 專利查詢
+            var searchPatentForm = document.getElementById('searchPatentForm');
+            if (searchPatentForm) {
+                searchPatentForm.onsubmit = function(e) {
+                    e.preventDefault();
+                    var formData = new FormData(searchPatentForm);
+                    fetch('patent_search.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(r => r.text())
+                    .then(txt => {
+                        document.getElementById('searchPatentResult').innerHTML = txt;
+                    });
+                };
+            }
+            // 論文查詢
+            var searchPaperForm = document.getElementById('searchPaperForm');
+            if (searchPaperForm) {
+                searchPaperForm.onsubmit = function(e) {
+                    e.preventDefault();
+                    var formData = new FormData(searchPaperForm);
+                    fetch('paper_search.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(r => r.text())
+                    .then(txt => {
+                        document.getElementById('searchPaperResult').innerHTML = txt;
+                    });
+                };
+            }
+        });
     </script>
 </head>
 <body>
@@ -467,10 +660,11 @@ include('db.php');
             <a href="#" id="navExp">維護經歷資料</a>
             <a href="#" id="navAward">維護獲獎資料</a>
             <a href="#" id="navProject">維護計畫資料</a>
+            <a href="#" id="navPaper">維護論文資料</a>
             <a href="#" id="navSpeech">維護演講資料</a>
             <a href="#" id="navTeachMat">維護教材與作品</a>
             <a href="#" id="navPatent">維護專利</a>
-            <a href="#" id="navSchedule">維護課表</a>
+            <a href="#" id="navCourse">維護課表</a>
             <a href="#" id="navLogin">維護登入資訊</a>
         </nav>
     </div>
@@ -500,6 +694,9 @@ include('db.php');
                     </label>
                     <label>電話分機：
                         <input type="text" name="Prof_ExtensionNumber" required>
+                    </label>
+                    <label>研究領域：
+                        <input type="text" name="Prof_ResearchFields" required>
                     </label>
                     <label>大頭照：
                         <input type="file" name="Prof_Image" accept="image/*">
@@ -561,27 +758,20 @@ include('db.php');
                 </form>
             </div>
             <div id="editUserSection" class="section" style="display:none;">
-                <h2>修改帳號</h2>
-                <form method="post" action="user_manage.php">
-                    <table>
-                        <tr><th>帳號</th><th>操作</th></tr>
-                        <?php 
-                        $users = $mysqli->query("SELECT * FROM users");
-                        while($row = $users->fetch_assoc()): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($row['username']) ?></td>
-                            <td>
-                                <form class="edit-form" method="post" style="display:inline-block;">
-                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                    <input type="text" name="username" value="<?= htmlspecialchars($row['username']) ?>" required style="width:90px;">
-                                    <input type="password" name="password" placeholder="新密碼(不修改可留空)">
-                                    <button type="submit" name="edit_user">修改</button>
-                                </form>
-                            </td>
-                        </tr>
-                        <?php endwhile; ?>
-                    </table>
-                </form>
+                <h2>帳號列表</h2>
+                <table>
+                    <tr><th>帳號</th><th>操作</th></tr>
+                    <?php 
+                    $users = $mysqli->query("SELECT * FROM users");
+                    while($row = $users->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['username']) ?></td>
+                        <td>
+                            <a href="user_manage.php?id=<?= $row['id'] ?>">修改</a>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </table>
             </div>
         </div>
 
@@ -946,7 +1136,8 @@ include('db.php');
                 <form action="patent_add.php" method="post">
                     <label>教師編號：<input type="text" name="Prof_ID" required></label>
                     <label>專利類型：<input type="text" name="Patent_Type" required></label>
-                    <label>專利名稱/內容：<input type="text" name="Patent_Term" required></label>
+                    <label>專利名稱/內容：<input type="text" name="Patent_Name" required></label>
+                    <label>專利時間：<input type="text" name="Patent_Term" required></label>
                     <button type="submit">新增</button>
                 </form>
             </div>
@@ -958,6 +1149,7 @@ include('db.php');
                         <th>教師編號</th>
                         <th>專利類型</th>
                         <th>專利名稱/內容</th>
+                        <th>專利時間</th>
                         <th>操作</th>
                     </tr>
                     <?php
@@ -967,6 +1159,7 @@ include('db.php');
                         <td><?= htmlspecialchars($row['Patent_ID']) ?></td>
                         <td><?= htmlspecialchars($row['Prof_ID']) ?></td>
                         <td><?= htmlspecialchars($row['Patent_Type']) ?></td>
+                        <td><?= htmlspecialchars($row['Patent_Name']) ?></td>
                         <td><?= htmlspecialchars($row['Patent_Term']) ?></td>
                         <td>
                             <a href="patent_edit.php?id=<?= urlencode($row['Patent_ID']) ?>">修改</a>
@@ -985,169 +1178,189 @@ include('db.php');
                 <div id="searchPatentResult"></div>
             </div>
         </div>
+
+        <div id="paperMenu" style="display:none;">
+            <label for="paperFunctionSelect"><strong>請選擇功能：</strong></label>
+            <select id="paperFunctionSelect" onchange="showPaperSection()">
+                <option value="">-- 請選擇 --</option>
+                <option value="add">新增論文</option>
+                <option value="delete">修改/刪除論文</option>
+                <option value="search">查詢論文</option>
+            </select>
+            <div id="addPaperSection" class="section" style="display:none;">
+                <h2>新增論文</h2>
+                <form action="paper_add.php" method="post">
+                    <label>教師編號：<input type="text" name="Prof_ID" required></label><br>
+                    <label>作者（多位請以空格分隔）：<input type="text" name="Paper_Author" placeholder="作者1 作者2 ..." required></label><br>
+                    <label>論文標題：<input type="text" name="Paper_Title" required></label><br>
+                    <label>類型：
+                        <select name="Paper_Category" id="Paper_Category_dash" onchange="updateFieldsDash()" required>
+                            <option value="期刊">期刊</option>
+                            <option value="會議">會議</option>
+                            <option value="專書">專書</option>
+                        </select>
+                    </label><br>
+                    <div id="journal_fields_dash" style="display:none;">
+                        <label>期刊名稱：<input type="text" name="Paper_JournalName"></label><br>
+                    </div>
+                    <div id="conference_fields_dash" style="display:none;">
+                        <label>會議名稱：<input type="text" name="Paper_ConferenceName"></label><br>
+                        <label>地點：<input type="text" name="Paper_ConferenceLocation"></label><br>
+                    </div>
+                    <div id="book_fields_dash" style="display:none;">
+                        <label>書名：<input type="text" name="Paper_BookTitle"></label><br>
+                        <label>類型：
+                            <select name="Paper_BookType">
+                                <option value="專書">專書</option>
+                                <option value="技術報告">技術報告</option>
+                            </select>
+                        </label><br>
+                    </div>
+                    <label>出版社：<input type="text" name="Paper_Publisher"></label><br>
+                    <label>發表日期：<input type="date" name="Paper_PublishDate" required></label><br>
+                    <label>收錄索引（SCIE/EI，可空）：<input type="text" name="Paper_Indexing"></label><br>
+                    <button type="submit">新增</button>
+                </form>
+                <script>
+                function updateFieldsDash() {
+                    var cat = document.getElementById('Paper_Category_dash').value;
+                    document.getElementById('journal_fields_dash').style.display = (cat === '期刊') ? '' : 'none';
+                    document.getElementById('conference_fields_dash').style.display = (cat === '會議') ? '' : 'none';
+                    document.getElementById('book_fields_dash').style.display = (cat === '專書') ? '' : 'none';
+                }
+                document.getElementById('Paper_Category_dash').addEventListener('change', updateFieldsDash);
+                window.addEventListener('DOMContentLoaded', updateFieldsDash);
+                </script>
+            </div>
+            <div id="deletePaperSection" class="section" style="display:none;">
+                <h2>修改/刪除論文</h2>
+                <table>
+                    <tr>
+                        <th>ID</th><th>教師編號</th><th>作者</th><th>標題</th><th>類型</th><th>操作</th>
+                    </tr>
+                    <?php $resultPaper = $mysqli->query("SELECT * FROM Paper");
+                    while($row = $resultPaper->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['Paper_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['Prof_ID']) ?></td>
+                        <td><?= htmlspecialchars($row['Paper_Author']) ?></td>
+                        <td><?= htmlspecialchars($row['Paper_Title']) ?></td>
+                        <td><?= htmlspecialchars($row['Paper_Category']) ?></td>
+                        <td>
+                            <a href="paper_edit.php?id=<?= urlencode($row['Paper_ID']) ?>">修改</a>
+                            <a class="delete-link" href="paper_delete.php?id=<?= urlencode($row['Paper_ID']) ?>" onclick="return confirm('確定要刪除嗎？');">刪除</a>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </table>
+            </div>
+            <div id="searchPaperSection" class="section" style="display:none;">
+                <h2>查詢論文</h2>
+                <form id="searchPaperForm" method="post" action="paper_search.php" onsubmit="return false;">
+                    <input type="text" name="search_keyword" placeholder="請輸入作者、標題、類型、期刊、會議、書名、出版社關鍵字" required>
+                    <button type="submit">查詢</button>
+                </form>
+                <div id="searchPaperResult"></div>
+            </div>
+        </div>
+
+        <div id="courseMenu" style="display:none;">
+            <label for="courseFunctionSelect"><strong>請選擇功能：</strong></label>
+            <select id="courseFunctionSelect" onchange="showCourseSection()">
+                <option value="">-- 請選擇 --</option>
+                <option value="add">新增課表</option>
+                <option value="edit">修改/刪除課表</option>
+            </select>
+            <div id="addCourseSection" class="section" style="display:none;">
+                <h2 style="margin-bottom:18px;">新增課表</h2>
+                <?php include('course_add.php'); ?>
+            </div>
+            <div id="editCourseSection" class="section" style="display:none;">
+                <h2 style="margin-bottom:18px;">修改課表</h2>
+                <?php include('course_edit.php'); ?>
+            </div>
+            <div id="deleteCourseSection" class="section" style="display:none;">
+                <h2 style="margin-bottom:18px;">刪除課表</h2>
+                <div style="color:#888;">（請於課表修改頁面刪除課程，或由管理員進行批次刪除）</div>
+            </div>
+        </div>
+
         <script>
-        document.getElementById('navTeacher').onclick = function(e) {
-            e.preventDefault();
-            document.getElementById('teacherMenu').style.display = 'block';
-            document.getElementById('userMenu').style.display = 'none';
-            document.getElementById('eduMenu').style.display = 'none';
-            document.getElementById('expMenu').style.display = 'none';
-            document.getElementById('awardMenu').style.display = 'none';
-            document.getElementById('projectMenu').style.display = 'none';
-            document.getElementById('speechMenu').style.display = 'none';
-            document.getElementById('teachmatMenu').style.display = 'none';
-            document.getElementById('patentMenu').style.display = 'none';
-            // section 全部隱藏
-            hideAllSections('teacherMenu');
-            // select 重設
-            document.getElementById('functionSelect').value = '';
-        };
-        document.getElementById('navEdu').onclick = function(e) {
-            e.preventDefault();
-            document.getElementById('teacherMenu').style.display = 'none';
-            document.getElementById('userMenu').style.display = 'none';
-            document.getElementById('eduMenu').style.display = 'block';
-            document.getElementById('expMenu').style.display = 'none';
-            document.getElementById('awardMenu').style.display = 'none';
-            document.getElementById('projectMenu').style.display = 'none';
-            document.getElementById('speechMenu').style.display = 'none';
-            document.getElementById('teachmatMenu').style.display = 'none';
-            document.getElementById('patentMenu').style.display = 'none';
-            hideAllSections('eduMenu');
-            document.getElementById('eduFunctionSelect').value = '';
-        };
-        document.getElementById('navExp').onclick = function(e) {
-            e.preventDefault();
-            document.getElementById('teacherMenu').style.display = 'none';
-            document.getElementById('userMenu').style.display = 'none';
-            document.getElementById('eduMenu').style.display = 'none';
-            document.getElementById('expMenu').style.display = 'block';
-            document.getElementById('awardMenu').style.display = 'none';
-            document.getElementById('projectMenu').style.display = 'none';
-            document.getElementById('speechMenu').style.display = 'none';
-            document.getElementById('teachmatMenu').style.display = 'none';
-            document.getElementById('patentMenu').style.display = 'none';
-            hideAllSections('expMenu');
-            document.getElementById('expFunctionSelect').value = '';
-        };
-        document.getElementById('navAward').onclick = function(e) {
-            e.preventDefault();
-            document.getElementById('teacherMenu').style.display = 'none';
-            document.getElementById('userMenu').style.display = 'none';
-            document.getElementById('eduMenu').style.display = 'none';
-            document.getElementById('expMenu').style.display = 'none';
-            document.getElementById('awardMenu').style.display = 'block';
-            document.getElementById('projectMenu').style.display = 'none';
-            document.getElementById('speechMenu').style.display = 'none';
-            document.getElementById('teachmatMenu').style.display = 'none';
-            document.getElementById('patentMenu').style.display = 'none';
-            hideAllSections('awardMenu');
-            document.getElementById('awardFunctionSelect').value = '';
-        };
-        document.getElementById('navProject').onclick = function(e) {
-            e.preventDefault();
-            document.getElementById('teacherMenu').style.display = 'none';
-            document.getElementById('userMenu').style.display = 'none';
-            document.getElementById('eduMenu').style.display = 'none';
-            document.getElementById('expMenu').style.display = 'none';
-            document.getElementById('awardMenu').style.display = 'none';
-            document.getElementById('projectMenu').style.display = 'block';
-            document.getElementById('speechMenu').style.display = 'none';
-            document.getElementById('teachmatMenu').style.display = 'none';
-            document.getElementById('patentMenu').style.display = 'none';
-            hideAllSections('projectMenu');
-            document.getElementById('projectFunctionSelect').value = '';
-        };
-        document.getElementById('navSpeech').onclick = function(e) {
-            e.preventDefault();
-            document.getElementById('teacherMenu').style.display = 'none';
-            document.getElementById('userMenu').style.display = 'none';
-            document.getElementById('eduMenu').style.display = 'none';
-            document.getElementById('expMenu').style.display = 'none';
-            document.getElementById('awardMenu').style.display = 'none';
-            document.getElementById('projectMenu').style.display = 'none';
-            document.getElementById('speechMenu').style.display = 'block';
-            document.getElementById('teachmatMenu').style.display = 'none';
-            document.getElementById('patentMenu').style.display = 'none';
-            hideAllSections('speechMenu');
-            document.getElementById('speechFunctionSelect').value = '';
-        };
-        document.getElementById('navTeachMat').onclick = function(e) {
-            e.preventDefault();
-            document.getElementById('teacherMenu').style.display = 'none';
-            document.getElementById('userMenu').style.display = 'none';
-            document.getElementById('eduMenu').style.display = 'none';
-            document.getElementById('expMenu').style.display = 'none';
-            document.getElementById('awardMenu').style.display = 'none';
-            document.getElementById('projectMenu').style.display = 'none';
-            document.getElementById('speechMenu').style.display = 'none';
-            document.getElementById('teachmatMenu').style.display = 'block';
-            document.getElementById('patentMenu').style.display = 'none';
-            hideAllSections('teachmatMenu');
-            document.getElementById('teachmatFunctionSelect').value = '';
-        };
-        document.getElementById('navPatent').onclick = function(e) {
-            e.preventDefault();
-            document.getElementById('teacherMenu').style.display = 'none';
-            document.getElementById('userMenu').style.display = 'none';
-            document.getElementById('eduMenu').style.display = 'none';
-            document.getElementById('expMenu').style.display = 'none';
-            document.getElementById('awardMenu').style.display = 'none';
-            document.getElementById('projectMenu').style.display = 'none';
-            document.getElementById('speechMenu').style.display = 'none';
-            document.getElementById('teachmatMenu').style.display = 'none';
-            document.getElementById('patentMenu').style.display = 'block';
-            hideAllSections('patentMenu');
-            document.getElementById('patentFunctionSelect').value = '';
-        };
-        document.getElementById('navSchedule').onclick = function(e) {
-            e.preventDefault();
-            document.getElementById('teacherMenu').style.display = 'none';
-            document.getElementById('userMenu').style.display = 'none';
-            document.getElementById('eduMenu').style.display = 'none';
-            document.getElementById('expMenu').style.display = 'none';
-            document.getElementById('awardMenu').style.display = 'none';
-            document.getElementById('projectMenu').style.display = 'none';
-            alert('尚未實作課表維護功能');
-        };
-        document.getElementById('navLogin').onclick = function(e) {
-            e.preventDefault();
-            document.getElementById('teacherMenu').style.display = 'none';
-            document.getElementById('userMenu').style.display = 'block';
-            document.getElementById('eduMenu').style.display = 'none';
-            document.getElementById('expMenu').style.display = 'none';
-            document.getElementById('awardMenu').style.display = 'none';
-            document.getElementById('projectMenu').style.display = 'none';
-            document.getElementById('speechMenu').style.display = 'none';
-            document.getElementById('teachmatMenu').style.display = 'none';
-            document.getElementById('patentMenu').style.display = 'none';
-        };
-        // 通用AJAX查詢功能
-        function setupAjaxSearch(formId, resultId, searchUrl) {
-            var form = document.getElementById(formId);
-            if (!form) return;
-            form.onsubmit = function(e) {
-                e.preventDefault();
-                var formData = new FormData(form);
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', searchUrl, true);
-                xhr.onload = function() {
-                    document.getElementById(resultId).innerHTML = xhr.responseText;
-                };
-                xhr.send(formData);
-            };
+        function showCourseSection() {
+            var v = document.getElementById('courseFunctionSelect').value;
+            document.getElementById('addCourseSection').style.display = (v==='add') ? 'block' : 'none';
+            document.getElementById('editCourseSection').style.display = (v==='edit') ? 'block' : 'none';
+            document.getElementById('deleteCourseSection').style.display = (v==='delete') ? 'block' : 'none';
         }
-        document.addEventListener('DOMContentLoaded', function() {
-            setupAjaxSearch('searchForm', 'searchResult', 'info_search.php');
-            setupAjaxSearch('searchEduForm', 'searchEduResult', 'edu_search.php');
-            setupAjaxSearch('searchExpForm', 'searchExpResult', 'exp_search.php');
-            setupAjaxSearch('searchAwardForm', 'searchAwardResult', 'award_search.php');
-            setupAjaxSearch('searchProjectForm', 'searchProjectResult', 'project_search.php');
-            setupAjaxSearch('searchSpeechForm', 'searchSpeechResult', 'speech_search.php');
-            setupAjaxSearch('searchTeachMatForm', 'searchTeachMatResult', 'teachmat_search.php');
-            setupAjaxSearch('searchPatentForm', 'searchPatentResult', 'patent_search.php');
-        });
-        </script>
-    </div>
+        // 課表資料結構
+        let courseSchedule = Array.from({length:14},()=>Array.from({length:5},()=>({Course_Name:'',Course_Teachers:'',Course_Credit:'',Course_Req:'必修',Course_Class:'',Course_Location:''})));
+        function renderCourseTable() {
+            document.querySelectorAll('#courseTable td.course-editable').forEach(td => {
+                const row = td.dataset.row-1, col = td.dataset.col-1;
+                td.textContent = courseSchedule[row][col].Course_Name || '';
+            });
+        }
+        if (document.getElementById('courseTable')) {
+            document.querySelectorAll('#courseTable td.course-editable').forEach(td => {
+                td.onclick = function() {
+                    const row = this.dataset.row-1, col = this.dataset.col-1;
+                    const panel = document.getElementById('courseFormPanel');
+                    panel.style.display = 'block';
+                    panel.innerHTML = `
+                        <h3>課程資訊（${row+1} 節 ${['Mon','Tue','Wed','Thu','Fri'][col]}）</h3>
+                        <form id="courseEditForm">
+                            <label>課程名稱：<input type="text" name="Course_Name" value="${courseSchedule[row][col].Course_Name||''}" required></label><br>
+                            <label>學分數：<input type="number" name="Course_Credit" value="${courseSchedule[row][col].Course_Credit||''}" min="0"></label><br>
+                            <label>必/選修：<select name="Course_Req"><option value="必修">必修</option><option value="選修">選修</option></select></label><br>
+                            <label>授課班級：<input type="text" name="Course_Class" value="${courseSchedule[row][col].Course_Class||''}"></label><br>
+                            <label>講師（可多位，以空格分隔）：<input type="text" name="Course_Teachers" value="${courseSchedule[row][col].Course_Teachers||''}"></label><br>
+                            <label>上課地點：<input type="text" name="Course_Location" value="${courseSchedule[row][col].Course_Location||''}"></label><br>
+                            <div style="margin-top:10px;"><button type="submit">儲存</button> <button type="button" id="cancelEditBtn">取消</button></div>
+                        </form>
+                    `;
+                    panel.querySelector('select[name="Course_Req"]').value = courseSchedule[row][col].Course_Req;
+                    panel.querySelector('#courseEditForm').onsubmit = function(e) {
+                        e.preventDefault();
+                        courseSchedule[row][col] = {
+                            Course_Name: this.Course_Name.value,
+                            Course_Credit: this.Course_Credit.value,
+                            Course_Req: this.Course_Req.value,
+                            Course_Class: this.Course_Class.value,
+                            Course_Teachers: this.Course_Teachers.value,
+                            Course_Location: this.Course_Location.value
+                        };
+                        renderCourseTable();
+                        panel.style.display = 'none';
+                    };
+                    panel.querySelector('#cancelEditBtn').onclick = function() {
+                        panel.style.display = 'none';
+                    };
+                };
+            });
+            document.getElementById('saveCourseBtn').onclick = function() {
+                // 將 row/col 轉為 Course_Period，並確保欄位順序正確
+                let scheduleWithPeriod = courseSchedule.map((rowArr, i) => rowArr.map((colObj, j) => {
+                    return {
+                        Course_Name: colObj.Course_Name,
+                        Course_Credit: colObj.Course_Credit,
+                        Course_Req: colObj.Course_Req,
+                        Course_Class: colObj.Course_Class,
+                        Course_Teachers: colObj.Course_Teachers,
+                        Course_Period: (i+1)+'-'+(j+1),
+                        Course_Location: colObj.Course_Location
+                    };
+                }));
+                fetch('course_add.php', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                    body: 'schedule='+encodeURIComponent(JSON.stringify(scheduleWithPeriod))
+                }).then(r=>r.text()).then(txt=>{
+                    alert('課表已儲存！');
+                    location.reload();
+                });
+            };
+            renderCourseTable();
+        }
+    </script>
 </body>
 </html>

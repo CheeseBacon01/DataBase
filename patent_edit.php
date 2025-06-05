@@ -14,13 +14,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Patent_ID = $_POST['Patent_ID'] ?? '';
     $Prof_ID = $_POST['Prof_ID'] ?? '';
     $Patent_Type = $_POST['Patent_Type'] ?? '';
+    $Patent_Name = $_POST['Patent_Name'] ?? '';
     $Patent_Term = $_POST['Patent_Term'] ?? '';
 
-    if (empty($Patent_ID) || empty($Prof_ID) || empty($Patent_Type) || empty($Patent_Term)) {
+    if (empty($Patent_ID) || empty($Prof_ID) || empty($Patent_Type) || empty($Patent_Name) || empty($Patent_Term)) {
         $error = "所有欄位都是必填的！";
     } else {
-        $stmt = $mysqli->prepare("UPDATE Patent SET Prof_ID=?, Patent_Type=?, Patent_Term=? WHERE Patent_ID=?");
-        $stmt->bind_param("sssi", $Prof_ID, $Patent_Type, $Patent_Term, $Patent_ID);
+        $stmt = $mysqli->prepare("UPDATE Patent SET Prof_ID=?, Patent_Type=?, Patent_Name=?, Patent_Term=? WHERE Patent_ID=?");
+        $stmt->bind_param("ssssi", $Prof_ID, $Patent_Type, $Patent_Term, $Patent_Name, $Patent_ID);
         if ($stmt->execute()) {
             $success = "修改成功！";
         } else {
@@ -89,7 +90,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
             <input type="hidden" name="Patent_ID" value="<?= htmlspecialchars($row['Patent_ID']) ?>">
             <label>教師編號：<input type="text" name="Prof_ID" value="<?= htmlspecialchars($row['Prof_ID']) ?>" required></label>
             <label>專利類型：<input type="text" name="Patent_Type" value="<?= htmlspecialchars($row['Patent_Type']) ?>" required></label>
-            <label>專利名稱/內容：<input type="text" name="Patent_Term" value="<?= htmlspecialchars($row['Patent_Term']) ?>" required></label>
+            <label>專利名稱/內容：<input type="text" name="Patent_Name" value="<?= htmlspecialchars($row['Patent_Name']) ?>" required></label>
+            <label>專利時間：<input type="text" name="Patent_Term" value="<?= htmlspecialchars($row['Patent_Term']) ?>" required></label>
             <button type="submit">儲存修改</button>
             <a href="dashboard.php?tab=patent" class="back-link">取消</a>
         <?php endif; ?>

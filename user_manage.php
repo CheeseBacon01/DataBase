@@ -14,26 +14,12 @@ $mysqli->query("CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
-// 新增帳號
-if (isset($_POST['add_user'])) {
-    $username = trim($_POST['username'] ?? '');
-    $password = $_POST['password'] ?? '';
-    if ($username && $password) {
-        $hash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $mysqli->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-        $stmt->bind_param("ss", $username, $hash);
-        if ($stmt->execute()) {
-            $msg = "新增帳號成功！";
-        } else {
-            $msg = "新增失敗，帳號可能已存在。";
-        }
-        $stmt->close();
-    } else {
-        $msg = "帳號與密碼皆必填。";
-    }
-}
+$success = '';
+$error = '';
+$row = null;
+
 // 修改帳號密碼
-if (isset($_POST['edit_user'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_user'])) {
     $id = intval($_POST['id']);
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
@@ -47,23 +33,63 @@ if (isset($_POST['edit_user'])) {
             $stmt->bind_param("si", $username, $id);
         }
         if ($stmt->execute()) {
-            $msg = "修改成功！";
+            $success = "修改成功！";
         } else {
-            $msg = "修改失敗，帳號可能重複。";
+            $error = "修改失敗，帳號可能重複。";
         }
         $stmt->close();
     } else {
-        $msg = "帳號不得為空。";
+        $error = "帳號不得為空。";
+    }
+    // 取得該帳號資料
+    if ($id) {
+        $stmt = $mysqli->prepare("SELECT * FROM users WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stmt->close();
     }
 }
-// 取得所有使用者資料
+// GET 顯示單一帳號編輯
+elseif ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
+    $id = intval($_GET['id']);
+    $stmt = $mysqli->prepare("SELECT * FROM users WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    if (!$row) {
+        $error = "找不到該帳號";
+    }
+    $stmt->close();
+}
+// 新增帳號
+elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_user'])) {
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+    if ($username && $password) {
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $mysqli->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
+        $stmt->bind_param("ss", $username, $hash);
+        if ($stmt->execute()) {
+            $success = "新增帳號成功！";
+        } else {
+            $error = "新增失敗，帳號可能已存在。";
+        }
+        $stmt->close();
+    } else {
+        $error = "帳號與密碼皆必填。";
+    }
+}
+// 預設顯示帳號列表
 $users = $mysqli->query("SELECT * FROM users");
 ?>
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
 <head>
     <meta charset="UTF-8">
-    <title>維護登入資訊</title>
+    <title>帳號管理</title>
     <style>
         body { font-family: "Microsoft JhengHei", Arial, sans-serif; background: #f8f9fa; }
         .container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,0.10); padding: 30px; }
@@ -72,19 +98,41 @@ $users = $mysqli->query("SELECT * FROM users");
         th, td { border: 1px solid #e3e6ea; padding: 10px; text-align: center; }
         th { background: #007bff; color: #fff; }
         tr:nth-child(even) { background: #f4f8fb; }
-        .msg { color: #28a745; margin-bottom: 12px; }
-        .error { color: #dc3545; margin-bottom: 12px; }
+        .msg-success { color: #28a745; margin-bottom: 12px; }
+        .msg-error { color: #dc3545; margin-bottom: 12px; }
         form { margin-bottom: 18px; }
         input[type="text"], input[type="password"] { padding: 6px 10px; border-radius: 5px; border: 1px solid #b0b0b0; margin-right: 8px; }
         button { padding: 6px 18px; background: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
         button:hover { background: #0056b3; }
-        .edit-form { display: inline; }
+        .edit-form { background: #fff; padding: 20px; margin: 40px auto; width: 350px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+        .back-link { margin-left: 10px; }
     </style>
+    <script>
+    function showResultAndRedirect(msg, isSuccess, redirectUrl) {
+        alert(msg);
+        if (isSuccess && redirectUrl) {
+            window.location.href = redirectUrl;
+        }
+    }
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h2>帳號管理</h2>
-        <?php if (!empty($msg)) echo '<div class="msg">' . htmlspecialchars($msg) . '</div>'; ?>
+<div class="container">
+    <h2>帳號管理</h2>
+    <?php if ($success): ?>
+        <script>showResultAndRedirect('<?= $success ?>', true, 'dashboard.php');</script>
+    <?php elseif ($error): ?>
+        <script>showResultAndRedirect('<?= $error ?>', false, 'dashboard.php');</script>
+    <?php elseif ($row): ?>
+        <form class="edit-form" action="user_manage.php" method="post" onsubmit="return true;">
+            <h3>修改帳號</h3>
+            <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']) ?>">
+            <label>帳號：<input type="text" name="username" value="<?= htmlspecialchars($row['username']) ?>" required></label><br>
+            <label>新密碼：<input type="password" name="password" placeholder="不修改可留空"></label><br>
+            <button type="submit" name="edit_user">儲存修改</button>
+            <a href="dashboard.php" class="back-link">取消</a>
+        </form>
+    <?php else: ?>
         <form method="post" style="margin-bottom:24px;">
             <input type="text" name="username" placeholder="帳號" required>
             <input type="password" name="password" placeholder="密碼" required>
@@ -96,17 +144,13 @@ $users = $mysqli->query("SELECT * FROM users");
             <tr>
                 <td><?= htmlspecialchars($row['username']) ?></td>
                 <td>
-                    <form class="edit-form" method="post" style="display:inline-block;">
-                        <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                        <input type="text" name="username" value="<?= htmlspecialchars($row['username']) ?>" required style="width:90px;">
-                        <input type="password" name="password" placeholder="新密碼(不修改可留空)">
-                        <button type="submit" name="edit_user">修改</button>
-                    </form>
+                    <a href="user_manage.php?id=<?= $row['id'] ?>">修改</a>
                 </td>
             </tr>
             <?php endwhile; ?>
         </table>
         <div style="margin-top:18px;"><a href="dashboard.php">回後台</a></div>
-    </div>
+    <?php endif; ?>
+</div>
 </body>
 </html>

@@ -226,6 +226,9 @@ $stmt8->close();
                 <div class="info"><span class="label">職稱：</span><?= htmlspecialchars($prof['Prof_title']) ?></div>
                 <div class="info"><span class="label">電子郵件：</span><?= htmlspecialchars($prof['Prof_EmailAddress']) ?></div>
                 <div class="info"><span class="label">電話分機：</span><?= htmlspecialchars($prof['Prof_ExtensionNumber']) ?></div>
+                <?php if (!empty($prof['Prof_ResearchFields'])): ?>
+                <div class="info"><span class="label">研究領域：</span><?= htmlspecialchars($prof['Prof_ResearchFields']) ?></div>
+                <?php endif; ?>
             </div>
             <?php if (!empty($prof['Prof_Image'])): ?>
             <div style="flex-shrink:0; text-align:right;">
@@ -273,8 +276,46 @@ $stmt8->close();
         <?php if (count($exp_in) === 0 && count($exp_out) === 0): ?>
             <div>尚無經歷資料</div>
         <?php endif; ?>
-        <h2>指導學生獲獎</h2>
-        <?php if (count($awards) > 0): ?>
+
+<?php
+// 取得論文資料
+$stmtPaper = $mysqli->prepare("SELECT * FROM Paper WHERE Prof_ID = ? ORDER BY Paper_PublishDate DESC, Paper_ID DESC");
+$stmtPaper->bind_param("s", $Prof_ID);
+$stmtPaper->execute();
+$papers = $stmtPaper->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmtPaper->close();
+?>
+<h2>論文</h2>
+<?php if (count($papers) > 0): ?>
+<div class="card-list">
+    <?php foreach($papers as $paper): ?>
+    <div class="card">
+        <div class="card-title">標題：<?= htmlspecialchars($paper['Paper_Title']) ?></div>
+        <div><span class="card-label">作者：</span><?= htmlspecialchars($paper['Paper_Author']) ?></div>
+        <div><span class="card-label">類型：</span><?= htmlspecialchars($paper['Paper_Category']) ?></div>
+        <?php if ($paper['Paper_Category'] === '期刊'): ?>
+            <div><span class="card-label">期刊名稱：</span><?= htmlspecialchars($paper['Paper_JournalName']) ?></div>
+        <?php elseif ($paper['Paper_Category'] === '會議'): ?>
+            <div><span class="card-label">會議名稱：</span><?= htmlspecialchars($paper['Paper_ConferenceName']) ?></div>
+            <div><span class="card-label">地點：</span><?= htmlspecialchars($paper['Paper_ConferenceLocation']) ?></div>
+        <?php elseif ($paper['Paper_Category'] === '專書'): ?>
+            <div><span class="card-label">書名：</span><?= htmlspecialchars($paper['Paper_BookTitle']) ?></div>
+            <div><span class="card-label">專書類型：</span><?= htmlspecialchars($paper['Paper_BookType']) ?></div>
+        <?php endif; ?>
+        <div><span class="card-label">出版社：</span><?= htmlspecialchars($paper['Paper_Publisher']) ?></div>
+        <div><span class="card-label">發表日期：</span><?= htmlspecialchars($paper['Paper_PublishDate']) ?></div>
+        <?php if (!empty($paper['Paper_Indexing'])): ?>
+        <div><span class="card-label">收錄索引：</span><?= htmlspecialchars($paper['Paper_Indexing']) ?></div>
+        <?php endif; ?>
+    </div>
+    <?php endforeach; ?>
+</div>
+<?php else: ?>
+<div>尚無論文資料</div>
+<?php endif; ?>
+
+<h2>指導學生獲獎</h2>
+<?php if (count($awards) > 0): ?>
         <div class="card-list">
             <?php foreach($awards as $award): ?>
             <div class="card">
@@ -351,7 +392,8 @@ $stmt8->close();
             <?php foreach($patents as $pat): ?>
             <div class="card">
                 <div class="card-title">專利類型：<?= htmlspecialchars($pat['Patent_Type']) ?></div>
-                <div><span class="card-label">專利名稱/內容：</span><?= htmlspecialchars($pat['Patent_Term']) ?></div>
+                <div><span class="card-label">專利名稱/內容：</span><?= htmlspecialchars($pat['Patent_Name']) ?></div>
+                <div><span class="card-label">專利時間：</span><?= htmlspecialchars($pat['Patent_Term']) ?></div>
             </div>
             <?php endforeach; ?>
         </div>

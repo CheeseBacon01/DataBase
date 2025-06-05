@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';
-$dbuser = 'root';
-$dbpassword = '';
-$dbname = 'teachers'; // Replace with your actual database name
+$dbuser = 'root';//D1248963
+$dbpassword = '';//#NqgHtx7W
+$dbname = 'teachers'; //D1248963
 
 $mysqli = new mysqli($host, $dbuser, $dbpassword, $dbname);
 

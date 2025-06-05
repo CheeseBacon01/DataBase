@@ -15,6 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Prof_title = $_POST['Prof_title'] ?? '';
     $Prof_EmailAddress = $_POST['Prof_EmailAddress'] ?? '';
     $Prof_ExtensionNumber = $_POST['Prof_ExtensionNumber'] ?? '';
+    $Prof_ResearchFields = $_POST['Prof_ResearchFields'] ?? '';
     $Prof_Image = null;
     if (isset($_FILES['Prof_Image']) && $_FILES['Prof_Image']['error'] === UPLOAD_ERR_OK) {
         $imgTmp = $_FILES['Prof_Image']['tmp_name'];
@@ -47,11 +48,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $check->close();
 
     // Prepare and execute the SQL INSERT statement
-    $stmt = $mysqli->prepare("INSERT INTO teachers (Prof_ID, Prof_Name, Prof_title, Prof_EmailAddress, Prof_ExtensionNumber, Prof_Image) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $mysqli->prepare("INSERT INTO teachers (Prof_ID, Prof_Name, Prof_title, Prof_EmailAddress, Prof_ExtensionNumber, Prof_ResearchFields, Prof_Image) VALUES (?, ?, ?, ?, ?, ?, ?)");
     if ($stmt === false) {
         die("SQL prepare failed: " . htmlspecialchars($mysqli->error));
     }
-    $stmt->bind_param("ssssss", $Prof_ID, $Prof_Name, $Prof_title, $Prof_EmailAddress, $Prof_ExtensionNumber, $Prof_Image);
+    $stmt->bind_param("sssssss", $Prof_ID, $Prof_Name, $Prof_title, $Prof_EmailAddress, $Prof_ExtensionNumber, $Prof_ResearchFields, $Prof_Image);
 
     if ($stmt->error) {
         die("SQL execute failed: " . htmlspecialchars($stmt->error));
@@ -81,6 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label>職稱：<input type="text" name="Prof_title" required></label><br>
         <label>電子郵件：<input type="email" name="Prof_EmailAddress" required></label><br>
         <label>電話分機：<input type="text" name="Prof_ExtensionNumber" required></label><br>
+        <label>研究領域：<input type="text" name="Prof_ResearchFields" placeholder="可輸入多個，以逗號分隔"></label><br>
         <label>大頭照：<input type="file" name="Prof_Image" accept="image/*"></label><br>
         <button type="submit">新增</button>
     </form>
