@@ -24,20 +24,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_user'])) {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
     if ($username) {
-        if ($password) {
-            $hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $mysqli->prepare("UPDATE users SET username=?, password=? WHERE id=?");
-            $stmt->bind_param("ssi", $username, $hash, $id);
+        // 檢查帳號是否與其他人重複
+        $stmt = $mysqli->prepare("SELECT id FROM users WHERE username = ? AND id != ?");
+        $stmt->bind_param("si", $username, $id);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $error = "修改失敗，帳號已存在。";
+            $stmt->close();
         } else {
-            $stmt = $mysqli->prepare("UPDATE users SET username=? WHERE id=?");
-            $stmt->bind_param("si", $username, $id);
+            $stmt->close();
+            if ($password) {
+                $hash = password_hash($password, PASSWORD_DEFAULT);
+                $stmt = $mysqli->prepare("UPDATE users SET username=?, password=? WHERE id=?");
+                $stmt->bind_param("ssi", $username, $hash, $id);
+            } else {
+                $stmt = $mysqli->prepare("UPDATE users SET username=? WHERE id=?");
+                $stmt->bind_param("si", $username, $id);
+            }
+            if ($stmt->execute()) {
+                $success = "修改成功！";
+            } else {
+                $error = "修改失敗，請稍後再試。";
+            }
+            $stmt->close();
         }
-        if ($stmt->execute()) {
-            $success = "修改成功！";
-        } else {
-            $error = "修改失敗，帳號可能重複。";
-        }
-        $stmt->close();
     } else {
         $error = "帳號不得為空。";
     }
@@ -69,15 +80,26 @@ elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_user'])) {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
     if ($username && $password) {
-        $hash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $mysqli->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-        $stmt->bind_param("ss", $username, $hash);
-        if ($stmt->execute()) {
-            $success = "新增帳號成功！";
+        // 檢查帳號是否已存在
+        $stmt = $mysqli->prepare("SELECT id FROM users WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $error = "新增失敗，帳號已存在。";
+            $stmt->close();
         } else {
-            $error = "新增失敗，帳號可能已存在。";
+            $stmt->close();
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $stmt = $mysqli->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
+            $stmt->bind_param("ss", $username, $hash);
+            if ($stmt->execute()) {
+                $success = "新增帳號成功！";
+            } else {
+                $error = "新增失敗，請稍後再試。";
+            }
+            $stmt->close();
         }
-        $stmt->close();
     } else {
         $error = "帳號與密碼皆必填。";
     }
@@ -110,7 +132,7 @@ $users = $mysqli->query("SELECT * FROM users");
     <script>
     function showResultAndRedirect(msg, isSuccess, redirectUrl) {
         alert(msg);
-        if (isSuccess && redirectUrl) {
+        if (redirectUrl) {
             window.location.href = redirectUrl;
         }
     }
