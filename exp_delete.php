@@ -12,14 +12,14 @@ $success = '';
 $error = '';
 
 if ($id) {
-    $stmt = $mysqli->prepare("DELETE FROM Experience WHERE Experience_ID = ?");
-    $stmt->bind_param("i", $id);
+    $user_id = $_SESSION['user_id'];
+    $stmt = $mysqli->prepare("DELETE FROM Experience WHERE Experience_ID = ? AND user_id = ?");
+    $stmt->bind_param("ii", $id, $user_id);
     if ($stmt->execute()) {
         $success = "刪除成功！";
     } else {
         $error = "刪除失敗！";
     }
-    $stmt->close();
 } else {
     $error = "未指定經歷編號";
 }
