@@ -1,4 +1,4 @@
-# User Data Management System
+# FCU Management System
 
 This project is a web-based user data management system built with PHP and MySQL. It provides a backend interface for managing user accounts and various types of personal data, such as experience, education, awards, projects, patents, speeches, teaching materials, papers, and courses. The system is designed for multi-user environments, with each user only able to manage their own data.
 
